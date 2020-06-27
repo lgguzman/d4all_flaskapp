@@ -127,3 +127,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+app/data/2019-2.csv
+*.csv
