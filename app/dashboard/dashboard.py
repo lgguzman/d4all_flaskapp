@@ -60,22 +60,22 @@ class DataBaseDashboard:
 def get_general_figs(connection, database):
     data_final = connection.get_periodo(database)
     data_final['label'] = data_final['label'].apply(lambda x: str(x) + '-')
-    takers_fig = px.bar(data_final, x='label', y='periodo',
+    takers_fig = px.bar(data_final, x='label', y='periodo', color="periodo",
                          labels={'label': 'Term', 'periodo': 'Number of test takers [log]'})
     takers_fig.update_layout(yaxis_type="log")
 
     nationalities = connection.get_nacionalidad(database)
     nationalities = nationalities[(nationalities['estu_nacionalidad'] > 10)]
-    nationalities_fig = px.bar(nationalities, x='label', y='estu_nacionalidad',
+    nationalities_fig = px.bar(nationalities, x='label', y='estu_nacionalidad', color="estu_nacionalidad",
                                 labels={'label': 'NATIONALITY', 'estu_nacionalidad': 'Number of test takers [log]'})
     nationalities_fig.update_layout(yaxis_type="log")
 
     gnr = connection.get_genero(database)
-    gender_fig = px.bar(gnr, x='label', y='estu_genero',
+    gender_fig = px.bar(gnr, x='label', y='estu_genero', color="estu_genero",
                          labels={'label': 'Gender', 'estu_genero': 'Number of test takers [log]'})
 
     depto = connection.get_dpto(database)
-    depto_fig = px.bar(depto, x='label', y='estu_depto_reside',
+    depto_fig = px.bar(depto, x='label', y='estu_depto_reside', color="estu_depto_reside",
                         labels={'label': 'Depto', 'estu_depto_reside': 'Number of test takers [log]'})
     depto_fig.update_layout(yaxis_type="log")
     return takers_fig, nationalities_fig, gender_fig, depto_fig
