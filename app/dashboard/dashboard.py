@@ -85,7 +85,7 @@ def create_dashboard(server):
     """Create a Plotly Dash dashboard."""
     dash_app = dash.Dash(
         server=server,
-        routes_pathname_prefix='/dashapp/'
+        routes_pathname_prefix='/api/dashapp/'
     )
 
     connection = DataBaseDashboard()
