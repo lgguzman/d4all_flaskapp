@@ -8,6 +8,6 @@ with app.app_context():
     # Import Dash application
     from app.dashboard import dashboard
 
-    app = dashboard.create_dashboard(app)
+    app = dashboard.create_dashboard2(app)
 
 

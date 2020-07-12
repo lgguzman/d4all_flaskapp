@@ -3,6 +3,8 @@ import dash_html_components as html
 import dash_core_components as dcc
 import pandas as pd
 import plotly.express as px
+from dash.dependencies import Output
+from dash.dependencies import Input
 from sqlalchemy import create_engine
 
 
@@ -13,110 +15,198 @@ class DataBaseDashboard:
         DB_DATABASE = 'icfes'
         DB_USERNAME = 'team17'
         DB_PASSWORD = 'team171234'
-        self.engine = create_engine(f'postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOSTNAME}/{DB_DATABASE}', pool_pre_ping=True)
+        self.engine = create_engine(f'postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOSTNAME}/{DB_DATABASE}',
+                                    pool_pre_ping=True)
 
-    def get_all(self, database="sb1120192"):
-        return pd.read_sql_query("""
-           SELECT  "ESTU_NACIONALIDAD",
-           "ESTU_GENERO", 
-           "PERIODO",
-           "ESTU_DEPTO_RESIDE" 
-           """ + " FROM " + database  , con=self.engine)
+    def count(self, column, database="sb1120192"):
+        select = "SELECT " + "\"" + column + "\" AS label, "
+        count = "COUNT(\"" + column + "\") AS " + column
+        from_select = " FROM " + database
+        group = " GROUP BY \"" + column + "\""
+        return pd.read_sql_query(select + count + from_select + group, con=self.engine)
 
-    def get_periodo(self, database="sb1120192"):
-        return pd.read_sql_query("""
-           SELECT   
-           "PERIODO" AS label, 
-           COUNT("PERIODO") AS PERIODO
-           """ +  " FROM " + database + """ GROUP BY "PERIODO"
-           """  , con=self.engine)
-
-    def get_nacionalidad(self, database="sb1120192"):
-        return pd.read_sql_query("""
-           SELECT   
-           "ESTU_NACIONALIDAD" AS label, 
-           COUNT("ESTU_NACIONALIDAD") AS ESTU_NACIONALIDAD
-           """ +  " FROM " + database + """ GROUP BY "ESTU_NACIONALIDAD"
-           """  , con=self.engine)
-
-    def get_genero(self, database="sb1120192"):
-        return pd.read_sql_query("""
-           SELECT   
-           "ESTU_GENERO" AS label, 
-           COUNT("ESTU_GENERO") AS ESTU_GENERO
-           """ +  " FROM " + database + """ GROUP BY "ESTU_GENERO"
-           """  , con=self.engine)
-
-    def get_dpto(self, database="sb1120192"):
-        return pd.read_sql_query("""
-           SELECT   
-           "ESTU_DEPTO_RESIDE" AS label, 
-           COUNT("ESTU_DEPTO_RESIDE") AS ESTU_DEPTO_RESIDE
-           """ +  " FROM " + database + """ GROUP BY "ESTU_DEPTO_RESIDE"
-           """  , con=self.engine)
+    def get(self, column, y, limit, database="sb1120192"):
+        select = "SELECT " + "\"" + column + "\" AS label, "
+        count = " \"" + y + "\" AS puntaje"
+        from_select = " FROM " + database
+        limit_select = " LIMIT " + str(limit)
+        return pd.read_sql_query(select + count + from_select + limit_select, con=self.engine)
 
 
 
-def get_general_figs(connection, database):
-    data_final = connection.get_periodo(database)
-    data_final['label'] = data_final['label'].apply(lambda x: str(x) + '-')
-    takers_fig = px.bar(data_final, x='label', y='periodo', color="periodo",
-                         labels={'label': 'Term', 'periodo': 'Number of test takers [log]'})
+def get_bar_fig(connection, column, database):
+    data_final = connection.count(column, database)
+    column_lc = column.lower()
+    data_final['label'] = data_final['label'].apply(lambda x: str(x) + ' ')
+    takers_fig = px.bar(data_final, x='label', y=column_lc, color=column_lc,
+                        labels={'label': 'Term', column_lc: 'Number of test takers [log]'})
     takers_fig.update_layout(yaxis_type="log")
-
-    nationalities = connection.get_nacionalidad(database)
-    nationalities = nationalities[(nationalities['estu_nacionalidad'] > 10)]
-    nationalities_fig = px.bar(nationalities, x='label', y='estu_nacionalidad', color="estu_nacionalidad",
-                                labels={'label': 'NATIONALITY', 'estu_nacionalidad': 'Number of test takers [log]'})
-    nationalities_fig.update_layout(yaxis_type="log")
-
-    gnr = connection.get_genero(database)
-    gender_fig = px.bar(gnr, x='label', y='estu_genero', color="estu_genero",
-                         labels={'label': 'Gender', 'estu_genero': 'Number of test takers [log]'})
-
-    depto = connection.get_dpto(database)
-    depto_fig = px.bar(depto, x='label', y='estu_depto_reside', color="estu_depto_reside",
-                        labels={'label': 'Depto', 'estu_depto_reside': 'Number of test takers [log]'})
-    depto_fig.update_layout(yaxis_type="log")
-    return takers_fig, nationalities_fig, gender_fig, depto_fig
+    return takers_fig
 
 
-def create_dashboard(server):
+def get_box_fig(connection, column,y, limit,  database):
+    data_final = connection.get(column, y, limit, database)
+    data_final['label'] = data_final['label'].apply(lambda x: str(x) + ' ')
+    takers_fig = px.box(data_final, x='label', y='puntaje', color='label')
+    return takers_fig
+
+
+
+def create_dashboard2(server):
     """Create a Plotly Dash dashboard."""
     dash_app = dash.Dash(
         server=server,
-        routes_pathname_prefix='/api/dashapp/'
+        routes_pathname_prefix='/dashapp/'
     )
 
     connection = DataBaseDashboard()
-
-    # test =pd.read_sql_query('''SELECT table_catalog, table_schema, table_name, table_type
-    #                      FROM information_schema.tables
-    #                      WHERE table_name LIKE '%%pro%%'
-    #                      ORDER BY table_name DESC;
-    #                      ''', con=database.engine)
-    # print(test.head(80))
-
-    ##SABER 11
-    takers_fig, nationalities_fig, gender_fig, depto_fig = get_general_figs(connection, "sb1120192")
-
-    ##SABER 12
-
-    takers_fig2, nationalities_fig2, gender_fig2, depto_fig2 = get_general_figs(connection, "gene20193")
-
-    # Create Dash Layout
-    dash_app.layout = html.Div([
-        html.H2("SABER 11 2019-2", id='title'),  # Creates the title of the app
-        dcc.Graph(figure=takers_fig, id='takers'),
-        dcc.Graph(figure=nationalities_fig, id='nationatlities'),
-        dcc.Graph(figure=gender_fig, id='genders'),
-        dcc.Graph(figure=depto_fig, id='depto'),
-        html.H2("SABER PRO 2019-2", id='title2'),  # Creates the title of the app
-        dcc.Graph(figure=takers_fig2, id='takers2'),
-        dcc.Graph(figure=nationalities_fig2, id='nationatlities2'),
-        dcc.Graph(figure=gender_fig2, id='genders2'),
-        dcc.Graph(figure=depto_fig2, id='depto2'),
-    ])
-
+    # App Layout
+    dash_app.layout = html.Div(
+        children=[
+            # Error Message
+            html.Div(id="error-message"),
+            # Top Banner
+            html.Div(
+                className="study-browser-banner row",
+                children=[
+                    html.H2(className="h2-title", children="ICFES (DATA4ALL)"),
+                    html.H2(className="h2-title-mobile", children="ICFES (DATA4ALL)"),
+                ],
+            ),
+            # Body of the App
+            html.Div(
+                className="row app-body",
+                children=[
+                    # User Controls
+                    html.Div(
+                        className="four columns card",
+                        children=[
+                            html.Div(
+                                className="bg-white user-control",
+                                children=[
+                                    html.Div(
+                                        className="padding-top-bot",
+                                        children=[
+                                            html.H6("Select Database"),
+                                            dcc.Dropdown(id="study-dropdown",
+                                                         options=[
+                                                             {"label": "Saber Pro 2019", "value": "gene20193"},
+                                                             {
+                                                                 "label": "Saber 11 2019",
+                                                                 "value": "sb1120192",
+                                                             },
+                                                         ],
+                                                         value="sb1120192",
+                                                         ),
+                                        ],
+                                    ),
+                                    html.Div(
+                                        className="padding-top-bot",
+                                        children=[
+                                            html.H6("Select Target"),
+                                            dcc.Dropdown(id="column-dropdown",
+                                                         options=[
+                                                             {"label": "Periodo", "value": "PERIODO"},
+                                                             {
+                                                                 "label": "Nacionalidad",
+                                                                 "value": "ESTU_NACIONALIDAD",
+                                                             },
+                                                             {
+                                                                 "label": "Genero",
+                                                                 "value": "ESTU_GENERO",
+                                                             },
+                                                             {
+                                                                 "label": "Departamento",
+                                                                 "value": "ESTU_DEPTO_RESIDE",
+                                                             }
+                                                         ],
+                                                         value="PERIODO",
+                                                         ),
+                                        ],
+                                    ),
+                                    html.Div(
+                                        className="padding-top-bot",
+                                        children=[
+                                            html.H6("Select N Samples (Only for Box chart)"),
+                                            dcc.Dropdown(id="limit-dropdown",
+                                                         options=[
+                                                             {"label": "100", "value": 100},
+                                                             {
+                                                                 "label": "500",
+                                                                 "value": 500,
+                                                             },
+                                                             {
+                                                                 "label": "1000",
+                                                                 "value": 1000,
+                                                             },
+                                                             {
+                                                                 "label": "2000",
+                                                                 "value": 2000,
+                                                             },
+                                                             {
+                                                                 "label": "5000",
+                                                                 "value": 5000,
+                                                             },
+                                                         ],
+                                                         value=1000,
+                                                         ),
+                                        ],
+                                    ),
+                                    html.Div(
+                                        className="padding-top-bot",
+                                        children=[
+                                            html.H6("Choose the type of plot"),
+                                            dcc.RadioItems(
+                                                id="chart-type",
+                                                options=[
+                                                    {"label": "Count Bar", "value": "bar"},
+                                                    {
+                                                        "label": "Score Box",
+                                                        "value": "box",
+                                                    },
+                                                ],
+                                                value="bar",
+                                                labelStyle={
+                                                    "display": "inline-block",
+                                                    "padding": "12px 12px 12px 0px",
+                                                },
+                                            ),
+                                        ],
+                                    ),
+                                ],
+                            )
+                        ],
+                    ),
+                    # Graph
+                    html.Div(
+                        className="eight columns card-left",
+                        children=[
+                            html.Div(
+                                className="bg-white",
+                                children=[
+                                    html.H5("Animal data plot"),
+                                    dcc.Loading(
+                                        children=dcc.Graph(id="plot")
+                                    )
+                                ],
+                            )
+                        ],
+                    ),
+                    dcc.Store(id="error", storage_type="memory"),
+                ],
+            ),
+        ]
+    )
+    # Callback to generate error message
+    # Also sets the data to be used
+    # If there is an error use default data else use uploaded data
+    @dash_app.callback(
+        Output("plot", "figure"),
+        [Input("chart-type", "value"), Input("study-dropdown", "value"), Input("column-dropdown", "value"), Input("limit-dropdown", "value")]
+    )
+    def update_output(chart_type, database, column, limit):
+        return get_bar_fig(connection, column, database) if chart_type == 'bar' else get_box_fig(connection, column, "PUNT_GLOBAL", limit, database)
 
     return dash_app.server
+
+
