@@ -1,5 +1,6 @@
 from app import app
 from flask import Flask, request, jsonify, make_response
+import json
 
 tasks = [
     {
@@ -62,3 +63,22 @@ def get_options():
         return _build_cors_prelight_response()
     else:
         return _corsify_actual_response(jsonify(options))
+
+@app.route('/api/cluster', methods=['GET'])
+def get_clusters():
+
+    with open('/home/ec2-user/data4all/app/data/df.json') as json_file:
+        data = json.load(json_file)
+        response = {
+        "type": "FeatureCollection",
+        "features": []
+        }
+        response["features"] = [{"type": "Feature",
+             "properties": {"id": x["index"], "cluster": x["Clus_km"]},
+             "geometry": {"type": "Point", "coordinates": [ x["Longitud"],x["Latitud"] ]}
+             } for x in data]
+
+        if request.method == "OPTIONS":  # CORS preflight
+            return _build_cors_prelight_response()
+        else:
+            return _corsify_actual_response(jsonify(response))
