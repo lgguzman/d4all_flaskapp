@@ -6,7 +6,7 @@ from dash.dependencies import Input, Output
 import plotly.express as px
 
 ######### APP STRUCTURE #########
-from ..lib import  sidebar, content,sidebar_r
+from app.libpage import  sidebar, content,sidebar_r
 
 
 def create_dashboard(server):
