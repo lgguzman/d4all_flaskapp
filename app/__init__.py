@@ -7,8 +7,8 @@ with app.app_context():
     from app import routes
 
     # Import Dash application
-    from app.dashboard import dashboard
+    from app.page import dash_template
 
-    app = dashboard.create_dashboard2(app)
+    app = dash_template.create_dashboard(app)
 
 
