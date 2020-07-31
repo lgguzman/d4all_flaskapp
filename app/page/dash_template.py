@@ -1,12 +1,12 @@
 import dash
 import dash_bootstrap_components as dbc
 import dash_html_components as html
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 
 import plotly.express as px
 
 ######### APP STRUCTURE #########
-from app.libpage import  sidebar, content,sidebar_r
+from app.libpage import sidebar, content, sidebar_r, mmap
 
 
 def create_dashboard(server):
@@ -17,7 +17,6 @@ def create_dashboard(server):
         external_stylesheets=[dbc.themes.BOOTSTRAP]
     )
 
-
     ###########################################################################################
     # Data Manipulation / Model
     ###########################################################################################
@@ -27,7 +26,7 @@ def create_dashboard(server):
     ### nivel 3 : 157 a 198
     ### nivel 4 : 199 a 300
     ## Fuente:  #https://www.icfes.gov.co/documents/20143/1210096/Niveles+de+desempeno+competencias+ciudadanas+Saber+Pro.pdf/ae70a#ad3-8ccc-7ac9-87ad-7197c96c6903
-    df={}
+    df = {}
     # Pensamiento critico : razonamiento + lectura critica
     df["pencritico"] = [
         ' He/She has a notion of the authors communicative intention and could establish relationships of ' + \
@@ -69,21 +68,16 @@ def create_dashboard(server):
         ' He/She shows different perspectives on the subject, make the approach more complex and allow satisfactory fulfillment of the communicative purpose. It makes proper use of punctuation marks, grammatical references, and connectors.'
     ]
 
-
     #########################
     # Dashboard Layout / View
     #########################
 
-
-
-
     ############## DEFINE APP LAYOUT #################
-    #app.layout = html.Div([sidebar, content])
-    LAYOUT_STYLE={
+    # app.layout = html.Div([sidebar, content])
+    LAYOUT_STYLE = {
         'padding': '15px 5px 15px 5px',
-        'width':'100%',
-        'background-color':'gray'
-
+        'width': '100%',
+        'background-color': 'gray'
 
     }
 
@@ -258,127 +252,159 @@ def create_dashboard(server):
     def update_perfil_div_comm(range_slider_comm, check_list_comm):
         return selected_skill(range_slider_comm, check_list_comm)
 
-    # @dash_app.callback(
-    #    Output('graph_2', 'figure'),
-    #    [Input('submit_button', 'n_clicks')],
-    #    [State('dropdown', 'value'), State('range_slider', 'value'), State('check_list', 'value'),
-    #     State('radio_items', 'value')
-    #     ])
-    def update_graph_2(n_clicks, dropdown_value, range_slider_value, check_list_value, radio_items_value):
-        print(n_clicks)
-        print(dropdown_value)
-        print(range_slider_value)
-        print(check_list_value)
-        print(radio_items_value)
-        fig = {
-            'data': [{
-                'x': [1, 2, 3],
-                'y': [3, 4, 5],
-                'type': 'bar'
-            }]
-        }
-        return fig
+    def get_traces():
+        # for well_type, dfff in dff.groupby('Well_Type'):
+        #     trace = dict(
+        #         type='scattermapbox',
+        #         lon=dfff['Surface_Longitude'],
+        #         lat=dfff['Surface_latitude'],
+        #         text=dfff['Well_Name'],
+        #         customdata=dfff['API_WellNo'],
+        #         name=WELL_TYPES[well_type],
+        #         marker=dict(
+        #             size=4,
+        #             opacity=0.6,
+        #         )
+        #     )
+        #     traces.append(trace);
+        return [dict(
+                type='scattermapbox',
+                lon=-76.4851423,
+                lat=5.0855571,
+                text='test',
+                name='test',
+                marker=dict(
+                    size=4,
+                    opacity=0.6,
+                )
+            )]
 
-    # @dash_app.callback(
-    #    Output('graph_3', 'figure'),
-    #    [Input('submit_button', 'n_clicks')],
-    #    [State('dropdown', 'value'), State('range_slider', 'value'), State('check_list', 'value'),
-    #     State('radio_items', 'value')
-    #     ])
-    def update_graph_3(n_clicks, dropdown_value, range_slider_value, check_list_value, radio_items_value):
-        print(n_clicks)
-        print(dropdown_value)
-        print(range_slider_value)
-        print(check_list_value)
-        print(radio_items_value)
-        df = px.data.iris()
-        fig = px.density_contour(df, x='sepal_width', y='sepal_length')
-        return fig
+    @dash_app.callback(Output('map_1', 'figure'),
+                       [Input('range_slider_comm', 'value')])
+    def make_main_figure(range_slider_comm):
+        traces = get_traces()
+        figure = dict(data=traces, layout=mmap.layout)
+        return figure
 
-    # @dash_app.callback(
-    #    Output('graph_4', 'figure'),
-    #    [Input('submit_button', 'n_clicks')],
-    #    [State('dropdown', 'value'), State('range_slider', 'value'), State('check_list', 'value'),
-    #     State('radio_items', 'value')
-    #     ])
-    def update_graph_4(n_clicks, dropdown_value, range_slider_value, check_list_value, radio_items_value):
-        print(n_clicks)
-        print(dropdown_value)
-        print(range_slider_value)
-        print(check_list_value)
-        print(radio_items_value)  # Sample data and figure
-        df = px.data.gapminder().query('year==2007')
-        fig = px.scatter_geo(df, locations='iso_alpha', color='continent',
-                             hover_name='country', size='pop', projection='natural earth')
-        fig.update_layout({
-            'height': 600
-        })
-        return fig
-
-    # @dash_app.callback(
-    #    Output('graph_5', 'figure'),
-    #    [Input('submit_button', 'n_clicks')],
-    #    [State('dropdown', 'value'), State('range_slider', 'value'), State('check_list', 'value'),
-    #     State('radio_items', 'value')
-    #     ])
-    def update_graph_5(n_clicks, dropdown_value, range_slider_value, check_list_value, radio_items_value):
-        print(n_clicks)
-        print(dropdown_value)
-        print(range_slider_value)
-        print(check_list_value)
-        print(radio_items_value)  # Sample data and figure
-        df = px.data.iris()
-        fig = px.scatter(df, x='sepal_width', y='sepal_length')
-        return fig
-
-    # @dash_app.callback(
-    #    Output('graph_6', 'figure'),
-    #    [Input('submit_button', 'n_clicks')],
-    #    [State('dropdown', 'value'), State('range_slider', 'value'), State('check_list', 'value'),
-    #     State('radio_items', 'value')
-    #     ])
-    def update_graph_6(n_clicks, dropdown_value, range_slider_value, check_list_value, radio_items_value):
-        print(n_clicks)
-        print(dropdown_value)
-        print(range_slider_value)
-        print(check_list_value)
-        print(radio_items_value)  # Sample data and figure
-        df = px.data.tips()
-        fig = px.bar(df, x='total_bill', y='day', orientation='h')
-        return fig
-
-    # @dash_app.callback(
-    #    Output('card_title_1', 'children'),
-    #    [Input('submit_button', 'n_clicks')],
-    #    [State('dropdown', 'value'), State('range_slider', 'value'), State('check_list', 'value'),
-    #     State('radio_items', 'value')
-    #     ])
-    def update_card_title_1(n_clicks, dropdown_value, range_slider_value, check_list_value, radio_items_value):
-        print(n_clicks)
-        print(dropdown_value)
-        print(range_slider_value)
-        print(check_list_value)
-        print(radio_items_value)  # Sample data and figure
-        return 'Card Tile 1 change by call back'
-
-    # @dash_app.callback(
-    #    Output('card_text_1', 'children'),
-    #    [Input('submit_button', 'n_clicks')],
-    #    [State('dropdown', 'value'), State('range_slider', 'value'), State('check_list', 'value'),
-    #     State('radio_items', 'value')
-    #     ])
-    def update_card_text_1(n_clicks, dropdown_value, range_slider_value, check_list_value, radio_items_value):
-        print(n_clicks)
-        print(dropdown_value)
-        print(range_slider_value)
-        print(check_list_value)
-        print(radio_items_value)  # Sample data and figure
-        return 'Card text change by call back'
-
-    #############################################
-    # MAIN SERVER
-    #############################################
+    # # @dash_app.callback(
+    # #    Output('graph_2', 'figure'),
+    # #    [Input('submit_button', 'n_clicks')],
+    # #    [State('dropdown', 'value'), State('range_slider', 'value'), State('check_list', 'value'),
+    # #     State('radio_items', 'value')
+    # #     ])
+    # def update_graph_2(n_clicks, dropdown_value, range_slider_value, check_list_value, radio_items_value):
+    #     print(n_clicks)
+    #     print(dropdown_value)
+    #     print(range_slider_value)
+    #     print(check_list_value)
+    #     print(radio_items_value)
+    #     fig = {
+    #         'data': [{
+    #             'x': [1, 2, 3],
+    #             'y': [3, 4, 5],
+    #             'type': 'bar'
+    #         }]
+    #     }
+    #     return fig
+    #
+    # # @dash_app.callback(
+    # #    Output('graph_3', 'figure'),
+    # #    [Input('submit_button', 'n_clicks')],
+    # #    [State('dropdown', 'value'), State('range_slider', 'value'), State('check_list', 'value'),
+    # #     State('radio_items', 'value')
+    # #     ])
+    # def update_graph_3(n_clicks, dropdown_value, range_slider_value, check_list_value, radio_items_value):
+    #     print(n_clicks)
+    #     print(dropdown_value)
+    #     print(range_slider_value)
+    #     print(check_list_value)
+    #     print(radio_items_value)
+    #     df = px.data.iris()
+    #     fig = px.density_contour(df, x='sepal_width', y='sepal_length')
+    #     return fig
+    #
+    # # @dash_app.callback(
+    # #    Output('graph_4', 'figure'),
+    # #    [Input('submit_button', 'n_clicks')],
+    # #    [State('dropdown', 'value'), State('range_slider', 'value'), State('check_list', 'value'),
+    # #     State('radio_items', 'value')
+    # #     ])
+    # def update_graph_4(n_clicks, dropdown_value, range_slider_value, check_list_value, radio_items_value):
+    #     print(n_clicks)
+    #     print(dropdown_value)
+    #     print(range_slider_value)
+    #     print(check_list_value)
+    #     print(radio_items_value)  # Sample data and figure
+    #     df = px.data.gapminder().query('year==2007')
+    #     fig = px.scatter_geo(df, locations='iso_alpha', color='continent',
+    #                          hover_name='country', size='pop', projection='natural earth')
+    #     fig.update_layout({
+    #         'height': 600
+    #     })
+    #     return fig
+    #
+    # # @dash_app.callback(
+    # #    Output('graph_5', 'figure'),
+    # #    [Input('submit_button', 'n_clicks')],
+    # #    [State('dropdown', 'value'), State('range_slider', 'value'), State('check_list', 'value'),
+    # #     State('radio_items', 'value')
+    # #     ])
+    # def update_graph_5(n_clicks, dropdown_value, range_slider_value, check_list_value, radio_items_value):
+    #     print(n_clicks)
+    #     print(dropdown_value)
+    #     print(range_slider_value)
+    #     print(check_list_value)
+    #     print(radio_items_value)  # Sample data and figure
+    #     df = px.data.iris()
+    #     fig = px.scatter(df, x='sepal_width', y='sepal_length')
+    #     return fig
+    #
+    # # @dash_app.callback(
+    # #    Output('graph_6', 'figure'),
+    # #    [Input('submit_button', 'n_clicks')],
+    # #    [State('dropdown', 'value'), State('range_slider', 'value'), State('check_list', 'value'),
+    # #     State('radio_items', 'value')
+    # #     ])
+    # def update_graph_6(n_clicks, dropdown_value, range_slider_value, check_list_value, radio_items_value):
+    #     print(n_clicks)
+    #     print(dropdown_value)
+    #     print(range_slider_value)
+    #     print(check_list_value)
+    #     print(radio_items_value)  # Sample data and figure
+    #     df = px.data.tips()
+    #     fig = px.bar(df, x='total_bill', y='day', orientation='h')
+    #     return fig
+    #
+    # # @dash_app.callback(
+    # #    Output('card_title_1', 'children'),
+    # #    [Input('submit_button', 'n_clicks')],
+    # #    [State('dropdown', 'value'), State('range_slider', 'value'), State('check_list', 'value'),
+    # #     State('radio_items', 'value')
+    # #     ])
+    # def update_card_title_1(n_clicks, dropdown_value, range_slider_value, check_list_value, radio_items_value):
+    #     print(n_clicks)
+    #     print(dropdown_value)
+    #     print(range_slider_value)
+    #     print(check_list_value)
+    #     print(radio_items_value)  # Sample data and figure
+    #     return 'Card Tile 1 change by call back'
+    #
+    # # @dash_app.callback(
+    # #    Output('card_text_1', 'children'),
+    # #    [Input('submit_button', 'n_clicks')],
+    # #    [State('dropdown', 'value'), State('range_slider', 'value'), State('check_list', 'value'),
+    # #     State('radio_items', 'value')
+    # #     ])
+    # def update_card_text_1(n_clicks, dropdown_value, range_slider_value, check_list_value, radio_items_value):
+    #     print(n_clicks)
+    #     print(dropdown_value)
+    #     print(range_slider_value)
+    #     print(check_list_value)
+    #     print(radio_items_value)  # Sample data and figure
+    #     return 'Card text change by call back'
+    #
+    # #############################################
+    # # MAIN SERVER
+    # #############################################
 
     return dash_app.server
-
-

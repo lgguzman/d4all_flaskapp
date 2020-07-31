@@ -122,7 +122,8 @@ content_first_row = dbc.Row([
 ### second row
 content_second_row = dbc.Row(
     [
-        dbc.Col(id="map_1",
+        dbc.Col(
+                 id='nothing',
                 md=12
                 ),
     ]
@@ -132,7 +133,7 @@ content_second_row = dbc.Row(
 content_third_row = dbc.Row(
     [
         dbc.Col(
-            dcc.Graph(id='graph_4'), md=12,
+            dcc.Graph(id='map_1'), md=12
         )
     ]
 )
