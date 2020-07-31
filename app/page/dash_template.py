@@ -30,43 +30,43 @@ def create_dashboard(server):
     df={}
     # Pensamiento critico : razonamiento + lectura critica
     df["pencritico"] = [
-     'Tiene noción de la intención comunicativa del autor y podría establecer relaciones de similitud y ordén. ',
-     'Comprende el sentido global del texto, identifica e interpreta información explicita de diferentes fuentes' + \
-     'Además que aplica procedimientos aritméticos sencillos.',
-     ' Es capaz de argumentar la validez de procedimientos (aritméticos, algebraicos y variacionales) mostrando' + \
-     'la capacidad de proyectar escritos a partir de esa información.',
-     ' Además es capaz de elegir el procedimiento más adecuado para la solución  de problemas'
+        ' He/She has a notion of the authors communicative intention and could establish relationships of ' + \
+        ' similarity and order. ',
+        ' Understands the global meaning of the text, identifies and interprets explicit information from ' + \
+        ' different sources. In addition it applies simple arithmetic procedures. ',
+        ' Is able to argue the validity of procedures (arithmetic, algebraic and variational) showing' + \
+        ' the ability to project writings from that information. ',
+        ' It is also capable of choosing the most appropriate procedure for solving problems. '
     ]
 
     # conocimiento de comunidad : abarca competencias ciudadanas
     df["competencias"] = [
-    'Demuestra una noción de los intereses,  cosmovisiones  y  dimensiones  presentes  de los principios ' + \
-    ' consignados en la constitución política.',
-    ' Se es conciente de los derechos individuales y colectivos de todo individuo.',
-    ' Reconoce la primacía de   la   Constitución   sobre   cualquier   otra   norma, además de los deberes ' + \
-    ' ciudadanos  consagrados  en ella. ',
-    ' Es capaz de aplicar conocimientos generales sobre situaciones sociales para su resolución.'
+        ' Demonstrates a notion of the present interests, worldviews, and dimensions of the principles ' + \
+        ' consigned in the political constitution.',
+        ' He/She is aware of the individual and collective rights of every individual.',
+        ' He/She recognizes the primacy of the Constitution over any other rule, in addition ' + \
+        ' to the citizen duties enshrined in it. ',
+        ' He/She is able to apply general knowledge about social situations for resolution.'
     ]
     ###### foreign lenguage  : ingles
     df["ingles"] = [
-    ' Demuestra conocimientos elementales del idioma extrangeros.',
-    ' Es capaz de comprender y utilizar expresiones cotidianas como tambíen sabe relacionarse de forma' + \
-    ' elemental.',
-    ' Es capaz de comprender frases y expresiones de areas especificas, demostrando dominio al momento de' +  \
-    ' ejecutar tareas simples y cotidianas.',
-    ' Es capaz de comprender las ideas principales de textos en la lengua extrangera y reproducirlos' +  \
-    ' como también producir textos sencillos, describir experiencias y acontecimientos.']
+        ' Demonstrates elementary knowledge of the foreign language.',
+        ' He/She is able to understand and use everyday expressions as well as know how to relate in an ' + \
+        ' elementary way. ',
+        ' He/She is able to understand phrases and expressions of specific areas, demonstrating mastery ' + \
+        ' when executing simple and daily tasks. ',
+        ' Is able to understand the main ideas of texts in the foreign language and reproduce them as well ' + \
+        ' as produce simple texts, describe experiences and events.']
 
     ######### Comunicación escrita (disyuntas)
-    df["comescrita"]=[
-    'Expresan ideas desarticuladas entre sí, que no dan cuenta de un planteamiento coherente. ',
-    'Presentan algunas fallas en su estructura y organización, que hacen que estos carezcan de unidad ' +  \
-    'semántica. ',
-    ' Emplean  una  estructura  básica  con  un inicio, un desarrollo y un cierre, aunque puede identificarse' + \
-    ' errores de puntuación y fallas de cohesión.',
-    ' Muestran diferentes perspectivas sobre el tema, complejizan el planteamiento y permiten cumplir ' +  \
-    ' satisfactoriamente con el  propósito  comunicativo. Hace uso adecuado de signos de puntuación, ' + \
-    ' referencias gramaticales y conectores.'
+    df["comescrita"] = [
+        ' He/She expresses disjointed ideas among themselves, which do not account for ' + \
+        ' a coherent approach.',
+        ' They present some flaws in their structure and organization, ' + \
+        ' which make them lack unity semantics.',
+        ' He/She uses a basic structure with a start, middle, and end, although scoring errors ' + \
+        ' and cohesion failures can be identified.',
+        ' He/She shows different perspectives on the subject, make the approach more complex and allow satisfactory fulfillment of the communicative purpose. It makes proper use of punctuation marks, grammatical references, and connectors.'
     ]
 
 
@@ -87,112 +87,32 @@ def create_dashboard(server):
 
     }
 
-    dash_app.layout  = dbc.Container(
+    ####### LAYOUT #############################
+    dash_app.layout = dbc.Container(
         [
-            html.Div([
-
-           dbc.Row(
+            html.Div(
                 [
-                   dbc.Col(
-                     [
-                          html.Img(src=dash_app.get_asset_url('logo.png'),style={'width':'100%','textAlign':'center'}),
-                     ],
-                     md=2
-                   ),
-                   dbc.Col(
-                       [
-                         html.H4('An Intelligent System for Profile and Skill Identification of ' + \
-                                'Human Resources in Colombian Regions using Pruebas Saber Data',
-                                style={'font-style':'italic','text-align':'center'}
-                                ),
-                         html.Hr()
 
-                       ]
-                       ,md=8
-                   ),
-                   dbc.Col(
-                       [
-                         html.H3(' Proyecto DS4A',
-                         style={
-                            'textAlign': 'center',
-                            'color':'blue'
-                          }),
-                         html.H5(' Colombia 2020',style={'textAlign':'center'}),
-                         html.H4(' CORRELATION ONE ', style={'color':'#ff9900','textAlign':'center'}),
-                         html.H5('Team 17',style={'textAlign': 'center'}),
-                         html.B('Patrocinado por:'),
-                         html.Img(src=dash_app.get_asset_url('mintic.jpg'),style={'width':'100%','textAlign':'center'})
-                       ],
-                       md=2,
-                       style={'padding':'35px 10px 0px 10'}
-                   ),
+                    content.getHeader(dash_app),
+                    html.Hr(),
+                    dbc.Row(
+                        [
+                            dbc.Col(sidebar.sidebar, md=2),
+                            dbc.Col(content.content, md=6),
+                            dbc.Col(sidebar_r.getComponent(dash_app), md=4)
+                        ],
+
+                    ),
+                    content.content_footer
                 ],
-
-
-            ),
-            html.Hr(),
-            dbc.Row(
-                [
-                    dbc.Col(sidebar.sidebar, md=2),
-                    dbc.Col(content.content, md=6),
-                    dbc.Col(sidebar_r.getComponent(dash_app), md=4)
-                ],
-
-            ),
-            dbc.Row(
-                [
-                      dbc.Col(
-                            [
-
-                                html.B('Business Problem:'),
-                                 html.P('Nowadays industry and government have a need of selecting and' + \
-                                ' knowing the skills and potential of their future collaborators.'),
-                                 html.B('Data:'),
-                                 html.P('Pruebas Saber Pro from the Colombian Institute for Tertiary Education' +  \
-                                ' Fomentation (ICFES).'
-                                ),
-                                html.H5('Monitores/Tutores de DS4A son'),
-                                html.P('German Prieto - g.prieto@correlation-one.com, Jimmy Jing ' + \
-                                       ' - jimmy@correlation-one.com ')
-                            ],
-                            md=6,
-                            style={}
-
-                      ), # fin de dbc.Col
-                      dbc.Col(
-                           [
-                               html.Br(),
-                               html.H5('Participantes'),
-                               html.Ul(
-                                    [
-                                       html.Li('Alfonso Cervantes Barragán (barrangana@uninorte.edu.co)'),
-                                       html.Li('Rafael García (ingrafaelgarciaq@hotmail.com)'),
-                                       html.Li('Luis Guzmán'),
-                                       html.Li('Julián Rincón (josej.jimenez@urosario.edu.co)'),
-                                       html.Li('Jorge Vélez (jorgeivanvelez@gmail.com)'),
-                                       html.Li('Ricardo Villanueva (ricardovillanuevapolanco@gmail.com)'),
-                                       html.Li('Eduardo Zurek (eduardo.zurek@gmail.com)')
-                                    ]
-                                 )  ## fin de html.UL
-                           ],
-                           md=6,
-                           style={}
-
-                      )  # fin de dbc.Col
-                ],
-                style={'padding':'10px','color':'white','background-color':'black'}
-
-             )    # fin de dbc.Row
-
-
-            ],
-            style={'background-color':'white','padding':'15px 15px 15px 15px'}
+                style={'background-color': 'white', 'padding': '15px 15px 15px 15px'}
             )
         ],
         fluid=True,
-        #className='shadow-lg p-3 mb-5 bg-black rounded',
+        # className='shadow-lg p-3 mb-5 bg-black rounded',
         style=LAYOUT_STYLE
     )
+
     #############################################
     # Interaction Between Components / Controller
     #############################################
@@ -203,31 +123,31 @@ def create_dashboard(server):
     ## Parametros rrange : valor numerico (de 1 a 4 indica el nivel de desempeño)
     ##            check  : lista (indica si checkbox esta elegida)
 
-    def selected_skill(rrange,check):
-         list_color=['#FF2212','#FFBC82','#DC31FF','#25BC66']
+    def selected_skill(rrange, check):
+        list_color = ['#FF2212', '#FFBC82', '#DC31FF', '#25BC66']
 
-         if not check:
-            return {'display':'none'}
-         else :
-            return {'background-color':list_color[rrange[0]-1],
-                'padding':'10px',
-                'color':'white',
-                'border-radius':'25px',
-                'border-top':'2px solid black',
-                 'text-align':'justify','display':'block'}
+        if not check:
+            return {'display': 'none'}
+        else:
+            return {'background-color': list_color[rrange[0] - 1],
+                    'padding': '10px',
+                    'color': 'white',
+                    'border-radius': '25px',
+                    'border-top': '2px solid black',
+                    'text-align': 'justify', 'display': 'block'}
 
     #################### CALLBACK ###############
     ######## listing to competencias values #####
     @dash_app.callback(
         Output(component_id='div_comunitaria', component_property='children'),
-        [Input('range_slider_com', 'value'),Input('check_list_com', 'value')]
+        [Input('range_slider_com', 'value'), Input('check_list_com', 'value')]
     )
     def update_perfil_div_com(range_slider_com, check_list_com):
         nivel1 = df["competencias"][0]
         nivel2 = df["competencias"][1]
         nivel3 = df["competencias"][2]
         nivel4 = df["competencias"][3]
-        output=''
+        output = ''
         if range_slider_com[0] == 1:
             output = nivel1
         elif range_slider_com[0] == 2:
@@ -239,28 +159,27 @@ def create_dashboard(server):
 
         if not check_list_com:
             return 'No seleccionada'
-        else :
+        else:
             return '{}'.format(output)
 
     @dash_app.callback(
         Output(component_id='div_comunitaria', component_property='style'),
-        [Input('range_slider_com', 'value'),Input('check_list_com', 'value')]
+        [Input('range_slider_com', 'value'), Input('check_list_com', 'value')]
     )
     def update_perfil_div_com(range_slider_com, check_list_com):
-        return selected_skill(range_slider_com,check_list_com)
-
+        return selected_skill(range_slider_com, check_list_com)
 
     ######## listing to pensamiento critico ##################
     @dash_app.callback(
         Output(component_id='div_pcritico', component_property='children'),
-        [Input('range_slider_quam', 'value'),Input('check_list_quam', 'value')]
+        [Input('range_slider_quam', 'value'), Input('check_list_quam', 'value')]
     )
     def update_perfil_div_pen(range_slider_quam, check_list_quam):
         nivel1 = df["pencritico"][0]
         nivel2 = df["pencritico"][1]
         nivel3 = df["pencritico"][2]
         nivel4 = df["pencritico"][3]
-        output=''
+        output = ''
         if range_slider_quam[0] == 1:
             output = nivel1
         elif range_slider_quam[0] == 2:
@@ -272,28 +191,28 @@ def create_dashboard(server):
 
         if not check_list_quam:
             return 'No seleccionada'
-        else :
+        else:
             return '{}'.format(output)
 
     @dash_app.callback(
         Output(component_id='div_pcritico', component_property='style'),
-        [Input('range_slider_quam', 'value'),Input('check_list_quam', 'value')]
+        [Input('range_slider_quam', 'value'), Input('check_list_quam', 'value')]
     )
     def update_perfil_div_pen(range_slider_quam, check_list_quam):
-        return selected_skill(range_slider_quam,check_list_quam)
+        return selected_skill(range_slider_quam, check_list_quam)
 
     ######## listing to idioma extrangero ##################
     @dash_app.callback(
         Output(component_id='div_ingles', component_property='children'),
-        [Input('range_slider_foreign', 'value'),Input('check_list_foreign', 'value')]
+        [Input('range_slider_foreign', 'value'), Input('check_list_foreign', 'value')]
     )
     def update_perfil_div_ingles(range_slider_foreign, check_list_foreign):
         nivel1 = df["ingles"][0]
         nivel2 = df["ingles"][1]
         nivel3 = df["ingles"][2]
         nivel4 = df["ingles"][3]
-        #output= df["ingles"][range_slider_foreign[0]-1]
-        output=''
+        # output= df["ingles"][range_slider_foreign[0]-1]
+        output = ''
         if range_slider_foreign[0] == 1:
             output = nivel1
         elif range_slider_foreign[0] == 2:
@@ -305,43 +224,41 @@ def create_dashboard(server):
 
         if not check_list_foreign:
             return 'No seleccionada'
-        else :
+        else:
             return '{}'.format(output)
 
     @dash_app.callback(
         Output(component_id='div_ingles', component_property='style'),
-        [Input('range_slider_foreign', 'value'),Input('check_list_foreign', 'value')]
+        [Input('range_slider_foreign', 'value'), Input('check_list_foreign', 'value')]
     )
     def update_perfil_div_ingles(range_slider_foreign, check_list_foreign):
-        return selected_skill(range_slider_foreign,check_list_foreign)
+        return selected_skill(range_slider_foreign, check_list_foreign)
 
     ######## listing to habilidades comunicativas ##################
     @dash_app.callback(
         Output(component_id='div_comescrita', component_property='children'),
-        [Input('range_slider_comm', 'value'),Input('check_list_comm', 'value')]
+        [Input('range_slider_comm', 'value'), Input('check_list_comm', 'value')]
     )
     def update_perfil_div_comm(range_slider_comm, check_list_comm):
         nivel1 = df["comescrita"][0]
         nivel2 = df["comescrita"][1]
         nivel3 = df["comescrita"][2]
         nivel4 = df["comescrita"][3]
-        output= df["comescrita"][range_slider_comm[0]-1]
-
+        output = df["comescrita"][range_slider_comm[0] - 1]
 
         if not check_list_comm:
             return 'No seleccionada'
-        else :
+        else:
             return '{}'.format(output)
 
     @dash_app.callback(
         Output(component_id='div_comescrita', component_property='style'),
-        [Input('range_slider_comm', 'value'),Input('check_list_comm', 'value')]
+        [Input('range_slider_comm', 'value'), Input('check_list_comm', 'value')]
     )
     def update_perfil_div_comm(range_slider_comm, check_list_comm):
-        return selected_skill(range_slider_comm,check_list_comm)
+        return selected_skill(range_slider_comm, check_list_comm)
 
-
-    #@dash_app.callback(
+    # @dash_app.callback(
     #    Output('graph_2', 'figure'),
     #    [Input('submit_button', 'n_clicks')],
     #    [State('dropdown', 'value'), State('range_slider', 'value'), State('check_list', 'value'),
@@ -362,8 +279,7 @@ def create_dashboard(server):
         }
         return fig
 
-
-    #@dash_app.callback(
+    # @dash_app.callback(
     #    Output('graph_3', 'figure'),
     #    [Input('submit_button', 'n_clicks')],
     #    [State('dropdown', 'value'), State('range_slider', 'value'), State('check_list', 'value'),
@@ -379,8 +295,7 @@ def create_dashboard(server):
         fig = px.density_contour(df, x='sepal_width', y='sepal_length')
         return fig
 
-
-    #@dash_app.callback(
+    # @dash_app.callback(
     #    Output('graph_4', 'figure'),
     #    [Input('submit_button', 'n_clicks')],
     #    [State('dropdown', 'value'), State('range_slider', 'value'), State('check_list', 'value'),
@@ -400,8 +315,7 @@ def create_dashboard(server):
         })
         return fig
 
-
-    #@dash_app.callback(
+    # @dash_app.callback(
     #    Output('graph_5', 'figure'),
     #    [Input('submit_button', 'n_clicks')],
     #    [State('dropdown', 'value'), State('range_slider', 'value'), State('check_list', 'value'),
@@ -417,8 +331,7 @@ def create_dashboard(server):
         fig = px.scatter(df, x='sepal_width', y='sepal_length')
         return fig
 
-
-    #@dash_app.callback(
+    # @dash_app.callback(
     #    Output('graph_6', 'figure'),
     #    [Input('submit_button', 'n_clicks')],
     #    [State('dropdown', 'value'), State('range_slider', 'value'), State('check_list', 'value'),
@@ -434,8 +347,7 @@ def create_dashboard(server):
         fig = px.bar(df, x='total_bill', y='day', orientation='h')
         return fig
 
-
-    #@dash_app.callback(
+    # @dash_app.callback(
     #    Output('card_title_1', 'children'),
     #    [Input('submit_button', 'n_clicks')],
     #    [State('dropdown', 'value'), State('range_slider', 'value'), State('check_list', 'value'),
@@ -449,8 +361,7 @@ def create_dashboard(server):
         print(radio_items_value)  # Sample data and figure
         return 'Card Tile 1 change by call back'
 
-
-    #@dash_app.callback(
+    # @dash_app.callback(
     #    Output('card_text_1', 'children'),
     #    [Input('submit_button', 'n_clicks')],
     #    [State('dropdown', 'value'), State('range_slider', 'value'), State('check_list', 'value'),

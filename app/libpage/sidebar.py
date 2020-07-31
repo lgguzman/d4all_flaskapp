@@ -10,11 +10,11 @@ import dash_bootstrap_components as dbc
 
 # the style arguments for the sidebar.
 SIDEBAR_STYLE = {
-#    'position': 'fixed',
+    #    'position': 'fixed',
     'top': 0,
     'left': 0,
     'bottom': 0,
-   # 'width': '20%',
+    # 'width': '20%',
     'padding': '20px 10px',
     'background-color': '#f8f9fa'
 }
@@ -24,19 +24,39 @@ TEXT_STYLE = {
     'color': '#191970'
 }
 
-
 controls = dbc.FormGroup(
     [
-         
-        ########### community skills ##########       
+
+        ############ SEARCH CONFIGURATION
+        html.Br(),
+        html.B('Search configuration',
+               style={
+                   'textAlign': 'center'
+               }),
+
+        html.Br(),
+        dcc.Dropdown(
+            id='dropdown_config',
+            options=[
+                {'label': 'Specific', 'value': 0},
+                {'label': 'Cumulative', 'value': 1}
+            ],
+            value=0
+        ),
+
+        ########### community skills ##########
+        html.Br(),
+        html.B('Choose the Profile', style={
+            'textAlign': 'center'
+        }),
         dbc.Card([dbc.Checklist(
             id='check_list_com',
             options=[{
-                'label': 'Habilidades comunitarias',
+                'label': 'Community skills',
                 'value': 'comvalue'
-             }
+            }
             ],
-            #value=['comvalue'],
+            # value=['comvalue'],
             inline=True
         )]),
         dcc.RangeSlider(
@@ -46,19 +66,19 @@ controls = dbc.FormGroup(
             step=1,
             value=[1],
             marks={
-            1: {'label': '1', 'style': {'color': '#77b0b1'}},
-            2: {'label': '2'},
-            3: {'label': '3'},
-            4: {'label': '4', 'style': {'color': '#f50'}}
+                1: {'label': '1', 'style': {'color': '#77b0b1'}},
+                2: {'label': '2'},
+                3: {'label': '3'},
+                4: {'label': '4', 'style': {'color': '#f50'}}
             }
         ),
-        
+
         ############# Q-reasoning skills #################
         dbc.Card([dbc.Checklist(
             id='check_list_quam',
             options=[
                 {
-                    'label': 'Pensamiento crítico',
+                    'label': 'Critical thinking',
                     'value': 'quamvalue'
                 }
             ],
@@ -71,24 +91,24 @@ controls = dbc.FormGroup(
             step=1,
             value=[1],
             marks={
-            1: {'label': '1', 'style': {'color': '#77b0b1'}},
-            2: {'label': '2'},
-            3: {'label': '3'},
-            4: {'label': '4', 'style': {'color': '#f50'}}
+                1: {'label': '1', 'style': {'color': '#77b0b1'}},
+                2: {'label': '2'},
+                3: {'label': '3'},
+                4: {'label': '4', 'style': {'color': '#f50'}}
             }
         ),
         ############# Foreign language  ###################
-        
+
         dbc.Card([dbc.Checklist(
             id='check_list_foreign',
             options=[
                 {
-                    'label': 'Idioma extrangero',
+                    'label': 'Foreign language skills',
                     'value': 'forvalue'
                 },
-                
+
             ],
-          
+
             inline=True
         )]),
         dcc.RangeSlider(
@@ -98,23 +118,23 @@ controls = dbc.FormGroup(
             step=1,
             value=[1],
             marks={
-            1: {'label': '1', 'style': {'color': '#77b0b1'}},
-            2: {'label': '2'},
-            3: {'label': '3'},
-            4: {'label': '4', 'style': {'color': '#f50'}}
+                1: {'label': '1', 'style': {'color': '#77b0b1'}},
+                2: {'label': '2'},
+                3: {'label': '3'},
+                4: {'label': '4', 'style': {'color': '#f50'}}
             }
         ),
         ################ communication skills ############
-        
+
         dbc.Card([dbc.Checklist(
             id='check_list_comm',
             options=[
                 {
-                    'label': 'Habilidades comunicativas',
+                    'label': 'Communicative skills',
                     'value': 'comyvalue'
                 }
             ],
-           
+
             inline=True
         )]),
         dcc.RangeSlider(
@@ -124,24 +144,24 @@ controls = dbc.FormGroup(
             step=1,
             value=[1],
             marks={
-            1: {'label': '1', 'style': {'color': '#77b0b1'}},
-            2: {'label': '2'},
-            3: {'label': '3'},
-            4: {'label': '4', 'style': {'color': '#f50'}}
+                1: {'label': '1', 'style': {'color': '#77b0b1'}},
+                2: {'label': '2'},
+                3: {'label': '3'},
+                4: {'label': '4', 'style': {'color': '#f50'}}
             }
         ),
-        
+
         ############### profesional skills  ##############
-        
+
         dbc.Card([dbc.Checklist(
             id='check_list_prof',
             options=[
                 {
-                    'label': 'Competencia profesional', 
+                    'label': 'Profesional competence',
                     'value': 'provalue'
                 }
             ],
-           
+
             inline=True
         )]),
         dcc.RangeSlider(
@@ -151,14 +171,13 @@ controls = dbc.FormGroup(
             step=1,
             value=[1],
             marks={
-            1: {'label': '1', 'style': {'color': '#77b0b1'}},
-            2: {'label': '2'},
-            3: {'label': '3'},
-            4: {'label': '4', 'style': {'color': '#f50'}}
+                1: {'label': '1', 'style': {'color': '#77b0b1'}},
+                2: {'label': '2'},
+                3: {'label': '3'},
+                4: {'label': '4', 'style': {'color': '#f50'}}
             }
         ),
-        
-        
+
         ################ profession     ###################
         dbc.Card([dbc.Checklist(
             id='check_list_profesion',
@@ -169,8 +188,23 @@ controls = dbc.FormGroup(
             ],
             inline=True
         )]),
-        html.P('ELIJE UNA PROFESIÓN', style={
-            'textAlign': 'center'
+        dcc.RangeSlider(
+            id='range_slider_profesion',
+            min=1,
+            max=4,
+            step=1,
+            value=[1],
+            marks={
+                1: {'label': '1', 'style': {'color': '#77b0b1'}},
+                2: {'label': '2'},
+                3: {'label': '3'},
+                4: {'label': '4', 'style': {'color': '#f50'}}
+            }
+        ),
+
+        html.Br(),
+        html.B('Choose one o more profesions', style={
+            'textAlign': 'left'
         }),
         dcc.Dropdown(
             id='dropdown_profesion',
@@ -189,29 +223,35 @@ controls = dbc.FormGroup(
             value=['value1'],  # default value
             multi=True
         ),
-        
-        ############# años 
-        html.P('Choose a year', style={
-            'textAlign': 'center'
+
+        ############# años
+        html.Br(),
+        html.B('Choose a year', style={
+            'textAlign': 'left'
         }),
         dcc.Dropdown(
             id='dropdown_ano',
-               options=[{'label': '2018', 'value': '2018'}, {'label': '2019', 'value': '2019'}],
-                value=['2019']
-         ),
-        ############## genero
-        html.P('Choose a gender', style={
-            'textAlign': 'center'
+            options=[{'label': '2018', 'value': '2018'}, {'label': '2019', 'value': '2019'}],
+            value='2019'
+        ),
+
+        ## rafael ###
+        ############# años
+        html.Br(),
+        html.B('Type of search', style={
+            'textAlign': 'left'
         }),
-         dcc.Dropdown(
-            id='dropdown_genero',
-               options=[{'label': 'Male', 'value':'female' }, {'label': 'Female', 'value': 'female'},{'label': 'Both', 'value': 'both'}],
-                value=['both']
-         ),
-        
-        
+        dcc.Dropdown(
+            id='display-dropdown',
+            options=[
+                {'label': 'Centralized', 'value': 0},
+                {'label': 'Decrentralized', 'value': 1}
+            ],
+            value=0
+        ),
+
         ########### submit button ##############
-               
+
         html.Br(),
         dbc.Button(
             id='submit_button',
@@ -219,13 +259,14 @@ controls = dbc.FormGroup(
             children='Submit',
             color='primary',
             block=True
+
         ),
     ]
 )
 ########### SIDEBAR left side #######################
 sidebar = html.Div(
     [
-        html.H2('PERFIL', style=TEXT_STYLE),
+        html.H2('Profile', style=TEXT_STYLE),
         html.Hr(),
         controls
     ],
