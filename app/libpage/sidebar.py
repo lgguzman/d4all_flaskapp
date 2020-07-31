@@ -29,7 +29,7 @@ controls = dbc.FormGroup(
 
         ############ SEARCH CONFIGURATION
         html.Br(),
-        html.B('Search configuration',
+        html.B('SEARCH CONFIGURATION',
                style={
                    'textAlign': 'center'
                }),
@@ -47,7 +47,7 @@ controls = dbc.FormGroup(
         ########### community skills ##########
         html.Br(),
 
-        html.B('Choose the Profile', style={
+        html.B('CHOOSE THE PROFILE', style={
             'textAlign': 'center'
         }),
 
@@ -207,7 +207,7 @@ controls = dbc.FormGroup(
         ),
 
         html.Br(),
-        html.B('Choose one o more profesions', style={
+        html.B('CHOOSE A REFERENCE GROUP', style={
             'textAlign': 'left'
         }),
         dcc.Dropdown(
@@ -242,7 +242,7 @@ controls = dbc.FormGroup(
         ## rafael ###
         ############# años
         html.Br(),
-        html.B('Type of search', style={
+        html.B('TYPE OF SEARCH', style={
             'textAlign': 'left'
         }),
         dcc.Dropdown(
