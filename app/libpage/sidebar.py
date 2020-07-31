@@ -77,12 +77,12 @@ controls = dbc.FormGroup(
             }
         ),
 
-        ############# Q-reasoning skills #################
+        ############# Critical Reading skills #################
         dbc.Card([dbc.Checklist(
             id='check_list_quam',
             options=[
                 {
-                    'label': 'Critical thinking',
+                    'label': 'Critical reading',
                     'value': 'quamvalue'
                 }
             ],
@@ -115,18 +115,30 @@ controls = dbc.FormGroup(
 
             inline=True
         )]),
-        dcc.RangeSlider(
-            id='range_slider_foreign',
-            min=1,
-            max=4,
-            step=1,
-            value=[1],
-            marks={
-                1: {'label': '1', 'style': {'color': '#77b0b1'}},
-                2: {'label': '2'},
-                3: {'label': '3'},
-                4: {'label': '4', 'style': {'color': '#f50'}}
-            }
+        dcc.Dropdown(
+            id='dropdown_foreign',
+            options=[{
+                'label': '-A1',
+                'value': 'valuemA1'
+            }, {
+                'label': 'A1',
+                'value': 'valueA1'
+            },
+                {
+                    'label': 'A2',
+                    'value': 'valueA1'
+                },
+                {
+                    'label': 'B1',
+                    'value': 'valueB1'
+                },
+                {
+                    'label': 'B2',
+                    'value': 'valueA1'
+                }
+            
+            ],
+            value='valueA1'
         ),
         ################ communication skills ############
 
@@ -155,21 +167,21 @@ controls = dbc.FormGroup(
             }
         ),
 
-        ############### profesional skills  ##############
+        ############### quantitative thinking skills  ##############
 
         dbc.Card([dbc.Checklist(
             id='check_list_prof',
             options=[
                 {
-                    'label': 'Profesional competence',
-                    'value': 'provalue'
+                    'label': 'Quantitative thinking skills',
+                    'value': 'qthinkingvalue'
                 }
             ],
 
             inline=True
         )]),
         dcc.RangeSlider(
-            id='range_slider_prof',
+            id='range_slider_qthinking',
             min=1,
             max=4,
             step=1,
@@ -182,30 +194,7 @@ controls = dbc.FormGroup(
             }
         ),
 
-        ################ profession     ###################
-        dbc.Card([dbc.Checklist(
-            id='check_list_profesion',
-            options=[{
-                'label': 'Profesion',
-                'value': 'profvalue'
-            }
-            ],
-            inline=True
-        )]),
-        dcc.RangeSlider(
-            id='range_slider_profesion',
-            min=1,
-            max=4,
-            step=1,
-            value=[1],
-            marks={
-                1: {'label': '1', 'style': {'color': '#77b0b1'}},
-                2: {'label': '2'},
-                3: {'label': '3'},
-                4: {'label': '4', 'style': {'color': '#f50'}}
-            }
-        ),
-
+        
         html.Br(),
         html.B('CHOOSE A REFERENCE GROUP', style={
             'textAlign': 'left'
@@ -224,8 +213,8 @@ controls = dbc.FormGroup(
                     'value': 'value3'
                 }
             ],
-            value=['value1'],  # default value
-            multi=True
+            value='value1'
+            
         ),
 
         ############# años
