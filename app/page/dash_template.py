@@ -3,6 +3,7 @@ import dash_bootstrap_components as dbc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
 import json
+import pandas as pd
 import plotly.express as px
 
 ######### APP STRUCTURE #########
@@ -266,33 +267,40 @@ def create_dashboard(server):
 
     def get_traces():
 
-        # try:
-        #     with open('/home/ec2-user/data4all/app/data/df.json') as json_file:
-        #         data = json.load(json_file)
-        #         return [
-        #             dict(
-        #                 type='scattermapbox',
-        #                 lon=x["Longitud"],
-        #                 lat=x["Latitud"],
-        #                 text=str(x["Clus_km"]),
-        #                 name=str(x["Clus_km"]),
-        #                 marker=dict(
-        #                     size=4,
-        #                     opacity=0.6,
-        #                 )
-        #             ) for x in data]
-        # except:
-        return [dict(
-            type='scattermapbox',
-            lon=-76.4851423,
-            lat=5.0855571,
-            text='test',
-            name='test',
-            marker=dict(
-                size=4,
-                opacity=0.6,
-            )
-        )]
+        try:
+            with open('/home/ec2-user/data4all/app/data/df.json') as json_file:
+                data = json.load(json_file)
+                df = pd.DataFrame(data)
+                print(df.head())
+                traces = []
+                for ctype, dfff in df.groupby('Clus_km'):
+                    trace = dict(
+                        type='scattermapbox',
+                        lon=dfff['Longitud'],
+                        lat=dfff['Latitud'],
+                        name=str(ctype),
+                        marker=dict(
+                            size=4,
+                            opacity=0.6,
+                        )
+                    )
+                    traces.append(trace)
+                return traces
+        except Exception as inst:
+            print(type(inst))    # the exception instance
+            print(inst.args)     # arguments stored in .args
+            print(inst)
+            return [dict(
+                type='scattermapbox',
+                lon=-76.4851423,
+                lat=5.0855571,
+                text='test',
+                name='test',
+                marker=dict(
+                    size=4,
+                    opacity=0.6,
+                )
+            )]
 
     @dash_app.callback(Output('map_1', 'figure'),
                        [Input('range_slider_comm', 'value')])
