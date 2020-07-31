@@ -192,22 +192,20 @@ def getFooter(app):
                 )  ,
         dbc.Col(
             [
-                html.B('Sponsored by:'),
                 html.Img(src=app.get_asset_url('mintic.jpg'), style={'width': '100%', 'textAlign': 'center'})
             ],
             md=2,
-            style={'padding': '35px 10px 0px 10',}
+            style={'padding': '35px 10px 0px 10'}
          )  ,
          dbc.Col(
             [
-                html.H4(' CORRELATION ONE ', style={'color': '#ff9900', 'textAlign': 'center'}),
-                html.H5('Team 17', style={'textAlign': 'center'})
+                html.Img(src=app.get_asset_url('corlogo.jpeg'), style={'width': '100px', 'textAlign': 'center'})
             ],
             md=3,
-            style={'padding': '35px 10px 0px 10', 'margin-left': '35px'}
+            style={'display': 'flex',  'justify-content': 'center', 'margin-left': '35px' }
         )
     ],
-            style={ 'background-color': 'white', 'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}
+            style={ 'background-color': 'white', 'display': 'flex', 'align-items': 'center', 'justify-content': 'center', 'margin-top': '15px'}
 
         )  ]
     )
