@@ -254,33 +254,33 @@ def create_dashboard(server):
 
     def get_traces():
 
-        try:
-            with open('/home/ec2-user/data4all/app/data/df.json') as json_file:
-                data = json.load(json_file)
-                return [
-                    dict(
-                        type='scattermapbox',
-                        lon=x["Longitud"],
-                        lat=x["Latitud"],
-                        text=str(x["Clus_km"]),
-                        name=str(x["Clus_km"]),
-                        marker=dict(
-                            size=4,
-                            opacity=0.6,
-                        )
-                    ) for x in data]
-        except:
-            return [dict(
-                type='scattermapbox',
-                lon=-76.4851423,
-                lat=5.0855571,
-                text='test',
-                name='test',
-                marker=dict(
-                    size=4,
-                    opacity=0.6,
-                )
-            )]
+        # try:
+        #     with open('/home/ec2-user/data4all/app/data/df.json') as json_file:
+        #         data = json.load(json_file)
+        #         return [
+        #             dict(
+        #                 type='scattermapbox',
+        #                 lon=x["Longitud"],
+        #                 lat=x["Latitud"],
+        #                 text=str(x["Clus_km"]),
+        #                 name=str(x["Clus_km"]),
+        #                 marker=dict(
+        #                     size=4,
+        #                     opacity=0.6,
+        #                 )
+        #             ) for x in data]
+        # except:
+        return [dict(
+            type='scattermapbox',
+            lon=-76.4851423,
+            lat=5.0855571,
+            text='test',
+            name='test',
+            marker=dict(
+                size=4,
+                opacity=0.6,
+            )
+        )]
 
     @dash_app.callback(Output('map_1', 'figure'),
                        [Input('range_slider_comm', 'value')])
