@@ -130,14 +130,20 @@ def getComponent(app):
 
 
 
-    return html.Div(
-        [
-            card
+    return dbc.Modal(
+            [
 
+                dbc.ModalBody(card),
+                dbc.ModalFooter(
+                    dbc.Button(
+                        "Close", id="close-centered", className="ml-auto"
+                    )
+                ),
+            ],
+            id="modal-centered",
+            centered=True,
+        )
 
-        ],
-        style=SIDEBAR_STYLE
-    )
 
 
 

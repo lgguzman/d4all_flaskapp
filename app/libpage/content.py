@@ -136,8 +136,7 @@ content_fourth_row = dbc.Row(
 )
 
 def getFooter(app):
-    return dbc.Row([
-        dbc.Row(
+    return  dbc.Row(
     [
         dbc.Col(
             [
@@ -153,14 +152,13 @@ def getFooter(app):
                 html.P('German Prieto - g.prieto@correlation-one.com, Jimmy Jing ' + \
                        ' - jimmy@correlation-one.com ')
             ],
-            md=6,
-            style={}
+            md=6
 
         ),  # fin de dbc.Col
         dbc.Col(
             [
-                html.Br(),
-                html.H5('Participants'),
+
+                html.B('Participants'),
                 html.Ul(
                     [
                         html.Li('Alfonso Cervantes Barragán (barrangana@uninorte.edu.co)'),
@@ -173,42 +171,42 @@ def getFooter(app):
                     ]
                 )  ## fin de html.UL
             ],
-            md=6,
-            style={}
+            md=6
 
         )  # fin de dbc.Col
 
     ],
-    style={'padding': '10px', 'color': 'white', 'background-color': 'black'}
+        style={'padding': '10px', 'color': 'white', 'background-color': 'black'}
 
 )  # fin de dbc.Row
- ,  dbc.Row(
-            [  dbc.Col(
+
+def getFooterIcons(app):
+    return dbc.Row(
+                [  dbc.Col(
+                    [
+                        html.Img(src='https://correlation1-public.s3-us-west-2.amazonaws.com/training/COLOMBIA+MAIN+SANS+TAG.svg', style={'width': '80%', 'textAlign': 'center'})
+                    ],
+                    md=3,
+                    style={'padding': '35px 10px 0px 10', 'margin-right': '35px'}
+                    )  ,
+            dbc.Col(
                 [
-                    html.Img(src='https://correlation1-public.s3-us-west-2.amazonaws.com/training/COLOMBIA+MAIN+SANS+TAG.svg', style={'width': '80%', 'textAlign': 'center'})
+                    html.Img(src=app.get_asset_url('mintic.jpg'), style={'width': '100%', 'textAlign': 'center'})
+                ],
+                md=2,
+                style={'padding': '35px 10px 0px 10'}
+             )  ,
+             dbc.Col(
+                [
+                    html.Img(src=app.get_asset_url('corlogo.jpeg'), style={'width': '100px', 'textAlign': 'center'})
                 ],
                 md=3,
-                style={'padding': '35px 10px 0px 10', 'margin-right': '35px'}
-                )  ,
-        dbc.Col(
-            [
-                html.Img(src=app.get_asset_url('mintic.jpg'), style={'width': '100%', 'textAlign': 'center'})
-            ],
-            md=2,
-            style={'padding': '35px 10px 0px 10'}
-         )  ,
-         dbc.Col(
-            [
-                html.Img(src=app.get_asset_url('corlogo.jpeg'), style={'width': '100px', 'textAlign': 'center'})
-            ],
-            md=3,
-            style={'display': 'flex',  'justify-content': 'center', 'margin-left': '35px' }
-        )
-    ],
-            style={ 'background-color': 'white', 'display': 'flex', 'align-items': 'center', 'justify-content': 'center', 'margin-top': '15px'}
+                style={'display': 'flex',  'justify-content': 'center', 'margin-left': '35px' }
+            )
+        ],
+                style={ 'background-color': 'white', 'display': 'flex', 'align-items': 'center', 'justify-content': 'center', 'margin-top': '15px'}
 
-        )  ]
-    )
+            )
 
 ############ right side ##############
 content = html.Div(

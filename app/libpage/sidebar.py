@@ -46,9 +46,13 @@ controls = dbc.FormGroup(
 
         ########### community skills ##########
         html.Br(),
+
         html.B('Choose the Profile', style={
             'textAlign': 'center'
         }),
+
+
+
         dbc.Card([dbc.Checklist(
             id='check_list_com',
             options=[{
@@ -266,7 +270,7 @@ controls = dbc.FormGroup(
 ########### SIDEBAR left side #######################
 sidebar = html.Div(
     [
-        html.H2('Profile', style=TEXT_STYLE),
+      html.H2(['Profile', html.I(id='info-button', n_clicks=0, className='fa fa-info-circle', style={'font-size':'18px'})], style=TEXT_STYLE) ,
         html.Hr(),
         controls
     ],
