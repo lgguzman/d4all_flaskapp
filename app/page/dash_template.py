@@ -2,7 +2,7 @@ import dash
 import dash_bootstrap_components as dbc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
-
+import json
 import plotly.express as px
 
 ######### APP STRUCTURE #########
@@ -253,21 +253,24 @@ def create_dashboard(server):
         return selected_skill(range_slider_comm, check_list_comm)
 
     def get_traces():
-        # for well_type, dfff in dff.groupby('Well_Type'):
-        #     trace = dict(
-        #         type='scattermapbox',
-        #         lon=dfff['Surface_Longitude'],
-        #         lat=dfff['Surface_latitude'],
-        #         text=dfff['Well_Name'],
-        #         customdata=dfff['API_WellNo'],
-        #         name=WELL_TYPES[well_type],
-        #         marker=dict(
-        #             size=4,
-        #             opacity=0.6,
-        #         )
-        #     )
-        #     traces.append(trace);
-        return [dict(
+
+        try:
+            with open('/home/ec2-user/data4all/app/data/df.json') as json_file:
+                data = json.load(json_file)
+                return [
+                    dict(
+                        type='scattermapbox',
+                        lon=x["Longitud"],
+                        lat=x["Latitud"],
+                        text=str(x["Clus_km"]),
+                        name=str(x["Clus_km"]),
+                        marker=dict(
+                            size=4,
+                            opacity=0.6,
+                        )
+                    ) for x in data]
+        except:
+            return [dict(
                 type='scattermapbox',
                 lon=-76.4851423,
                 lat=5.0855571,
