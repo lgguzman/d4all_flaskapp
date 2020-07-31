@@ -24,7 +24,7 @@ def getHeader(app):
         [
             dbc.Col(
                 [
-                    html.Img(src=app.get_asset_url('logo.png'), style={'width': '100%', 'textAlign': 'center'}),
+                    html.Img(src=app.get_asset_url('logo.png'), style={'width': '50%', 'textAlign': 'center'}),
                 ],
                 md=2
             ),
@@ -37,25 +37,10 @@ def getHeader(app):
                     html.Hr()
 
                 ]
-                , md=8
-            ),
-            dbc.Col(
-                [
-                    html.H3(' Proyecto DS4A',
-                            style={
-                                'textAlign': 'center',
-                                'color': 'blue'
-                            }),
-                    html.H5(' Colombia 2020', style={'textAlign': 'center'}),
-                    html.H4(' CORRELATION ONE ', style={'color': '#ff9900', 'textAlign': 'center'}),
-                    html.H5('Team 17', style={'textAlign': 'center'}),
-                    html.B('Patrocinado por:'),
-                    html.Img(src=app.get_asset_url('mintic.jpg'), style={'width': '100%', 'textAlign': 'center'})
-                ],
-                md=2,
-                style={'padding': '35px 10px 0px 10'}
+                , md=10
             ),
         ],
+        style={'background-color': 'white', 'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}
 
     )
 
@@ -150,7 +135,9 @@ content_fourth_row = dbc.Row(
     ]
 )
 
-content_footer = dbc.Row(
+def getFooter(app):
+    return dbc.Row([
+        dbc.Row(
     [
         dbc.Col(
             [
@@ -162,7 +149,7 @@ content_footer = dbc.Row(
                 html.P('Pruebas Saber Pro from the Colombian Institute for Tertiary Education' + \
                        ' Fomentation (ICFES).'
                        ),
-                html.H5('Monitores/Tutores de DS4A son'),
+                html.H5('DS4A advisors:'),
                 html.P('German Prieto - g.prieto@correlation-one.com, Jimmy Jing ' + \
                        ' - jimmy@correlation-one.com ')
             ],
@@ -173,7 +160,7 @@ content_footer = dbc.Row(
         dbc.Col(
             [
                 html.Br(),
-                html.H5('Participantes'),
+                html.H5('Participants'),
                 html.Ul(
                     [
                         html.Li('Alfonso Cervantes Barragán (barrangana@uninorte.edu.co)'),
@@ -190,10 +177,40 @@ content_footer = dbc.Row(
             style={}
 
         )  # fin de dbc.Col
+
     ],
     style={'padding': '10px', 'color': 'white', 'background-color': 'black'}
 
 )  # fin de dbc.Row
+ ,  dbc.Row(
+            [  dbc.Col(
+                [
+                    html.Img(src='https://correlation1-public.s3-us-west-2.amazonaws.com/training/COLOMBIA+MAIN+SANS+TAG.svg', style={'width': '80%', 'textAlign': 'center'})
+                ],
+                md=3,
+                style={'padding': '35px 10px 0px 10', 'margin-right': '35px'}
+                )  ,
+        dbc.Col(
+            [
+                html.B('Sponsored by:'),
+                html.Img(src=app.get_asset_url('mintic.jpg'), style={'width': '100%', 'textAlign': 'center'})
+            ],
+            md=2,
+            style={'padding': '35px 10px 0px 10',}
+         )  ,
+         dbc.Col(
+            [
+                html.H4(' CORRELATION ONE ', style={'color': '#ff9900', 'textAlign': 'center'}),
+                html.H5('Team 17', style={'textAlign': 'center'})
+            ],
+            md=3,
+            style={'padding': '35px 10px 0px 10', 'margin-left': '35px'}
+        )
+    ],
+            style={ 'background-color': 'white', 'display': 'flex', 'align-items': 'center', 'justify-content': 'center'}
+
+        )  ]
+    )
 
 ############ right side ##############
 content = html.Div(

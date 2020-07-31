@@ -97,7 +97,7 @@ def create_dashboard(server):
                         ],
 
                     ),
-                    content.content_footer
+                    content.getFooter(dash_app)
                 ],
                 style={'background-color': 'white', 'padding': '15px 15px 15px 15px'}
             )
