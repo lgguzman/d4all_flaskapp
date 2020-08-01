@@ -30,8 +30,8 @@ def getHeader(app):
             ),
             dbc.Col(
                 [
-                    html.H4('An Intelligent System for Profile and Skill Identification of ' + \
-                            'Human Resources in Colombian Regions using Pruebas Saber Data',
+                    html.H4('Professional Locator: An Intelligent System for Profile and Skill Identification of ' + \
+                            'Human Resources in Colombian Regions',
                             style={'font-style': 'italic', 'text-align': 'center'}
                             ),
                     html.Hr()

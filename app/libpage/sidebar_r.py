@@ -88,7 +88,7 @@ def getComponent(app):
                     ),
 
                     html.Hr(),
-                    html.H5('Community skills:',
+                    html.H5('Community skills',
                             id='h5_com',
                             style={
                                 'textAlign': 'left',

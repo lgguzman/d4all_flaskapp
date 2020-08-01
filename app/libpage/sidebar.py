@@ -251,7 +251,7 @@ controls = dbc.FormGroup(
         ## rafael ###
         ############# años
         html.Br(),
-        html.B('TYPE OF Search', style={
+        html.B('TYPE OF SEARCH', style={
             'textAlign': 'left'
         }),
         dcc.Dropdown(
