@@ -271,7 +271,7 @@ def create_dashboard(server):
         return selected_skill(range_slider_comm, check_list_comm)
 
     def data_for_map(df1):
-        dbs = DBSCAN(eps=600 / 6371,
+        dbs = DBSCAN(eps=650 / 6371,
                      min_samples=1,
                      metric='haversine').fit(df1[['Longitud', 'Latitud']],
                                              sample_weight=df1['count'])
