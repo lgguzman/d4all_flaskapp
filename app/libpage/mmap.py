@@ -3,6 +3,7 @@ mapbox_access_token = 'pk.eyJ1IjoibGdndXptYW4iLCJhIjoiY2tibnlhc2V6MXhkNzMxbXl2bX
 
 layout = dict(
     autosize=True,
+    height=640,
     automargin=True,
     margin=dict(
         l=30,
@@ -13,7 +14,7 @@ layout = dict(
     hovermode="closest",
     plot_bgcolor="#F9F9F9",
     paper_bgcolor="#F9F9F9",
-    legend=dict(font=dict(size=10), orientation='h'),
+    showlegend=False,
     title='',
     mapbox=dict(
         accesstoken=mapbox_access_token,
@@ -22,6 +23,6 @@ layout = dict(
             lon=-76.4851423,
             lat=5.0855571
         ),
-        zoom=4,
+        zoom=5,
     )
 )
