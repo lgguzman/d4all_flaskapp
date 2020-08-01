@@ -18,8 +18,11 @@ class DataBaseDashboard:
         try:
             self.ref_grp = pd.read_csv("/home/ec2-user/data4all/app/data/reference_groups.csv", encoding="utf-8")
             self.coord = pd.read_excel('/home/ec2-user/data4all/app/data/Coordenadas_Colombia_202061.xls')
-        except:
+        except Exception as inst:
             print("unable to load data")
+            print(type(inst))  # the exception instance
+            print(inst.args)  # arguments stored in .args
+            print(inst)
         self.engine = create_engine(f'postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOSTNAME}/{DB_DATABASE}',
                                     pool_pre_ping=True)
 
