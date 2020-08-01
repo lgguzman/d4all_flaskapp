@@ -18,7 +18,7 @@ def create_dashboard(server):
     """Create a Plotly Dash dashboard."""
     dash_app = dash.Dash(
         server=server,
-        routes_pathname_prefix='/dashapp/',
+        # routes_pathname_prefix='/dashapp/',
         external_stylesheets=[dbc.themes.BOOTSTRAP, 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css']
     )
 
@@ -281,14 +281,6 @@ def create_dashboard(server):
     def cluster_selection(df2,
                           minimun_number_of_elements=0,
                           criterium='all'):
-        # criterium: ['max','min','all']
-        # df3 = df2.sort_values(by=['count'])
-        # df3 = df3[df3['count'] >= minimun_number_of_elements]
-        # if criterium == 'min':
-        #     df3 = df3.head(2)
-        # elif criterium == 'max':
-        #     df3 = df3.tail(2)
-        # return df3
         count_cluster_grouped = df2.groupby('clus_db').sum().sort_values(by='count', ascending=False)
 
         count_clus_filtered = count_cluster_grouped[count_cluster_grouped['count'] >= minimun_number_of_elements]
@@ -336,25 +328,6 @@ def create_dashboard(server):
                     )
                 )
                 traces.append(trace)
-            # traces.append(dict(
-            #         type='scattermapbox',
-            #         lon=df2['Longitud'],
-            #         lat=df2['Latitud'],
-            #         name=str(df2['clus_db']),
-            #         text=df2['Nombre municipio'],
-            #
-            #         color_continuous_scale=px.colors.diverging.Tealrose,
-            #
-            #         marker=dict(
-            #             size=df2["count"].apply(lambda x: min(max(x, 10), 40)),
-            #             cmin=0,
-            #             cmax=20,
-            #             color=df2['clus_db'],
-            #             color_continuous_midpoint=1,
-            #             opacity=1,
-            #
-            #         )
-            # ))
             return traces
         except Exception as inst:
             print(type(inst))    # the exception instance
@@ -433,15 +406,6 @@ def create_dashboard(server):
                             fl_sk=dropdown_foreign,
                             criterium=dropdown_search)
         figure = dict(data=traces, layout=mmap.layout)
-        # return get_map(cty_sk=range_slider_com[0],
-        #                     ctc_rd=range_slider_quam[0],
-        #                     cmm_sk=range_slider_comm[0],
-        #                     qtt_tk=range_slider_qthinking[0],
-        #                     year=dropdown_ano,
-        #                     ref_grp_index=dropdown_profesion,
-        #                     greather_or_equal=dropdown_config,
-        #                     fl_sk=dropdown_foreign,
-        #                     criterium=dropdown_search)
         return figure
 
     @dash_app.callback([Output('graph_1', 'figure'),
