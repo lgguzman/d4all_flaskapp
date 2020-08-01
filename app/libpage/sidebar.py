@@ -201,19 +201,85 @@ controls = dbc.FormGroup(
         }),
         dcc.Dropdown(
             id='dropdown_profesion',
-            options=[{
-                'label': 'Administracion',
-                'value': 'value1'
-            }, {
-                'label': 'Ingenieria',
-                'value': 'value2'
+            options=[
+            {
+                'label': 'Fine arts and Design',
+                'value': 2
             },
-                {
-                    'label': 'Comunicación social',
-                    'value': 'value3'
-                }
+            {
+                'label': 'Natural and exact Sciences',
+                'value': 5
+            },
+            {
+                    'label': 'Social Sciences',
+                    'value': 6
+             },
+             {
+                    'label': 'Humanities',
+                    'value': 13
+             },   
+             {
+                    'label': 'Law',
+                    'value': 9
+             },   
+             {
+                    'label': 'Communication, journalism and advertising',
+                    'value': 7
+             },   
+             {
+                    'label': 'Military and naval Sciences',
+                    'value': 4
+             },   
+             {
+                    'label': 'Agricultural Sciences',
+                    'value': 3
+             },   
+             {
+                    'label': 'Management and related',
+                    'value': 0
+             },   
+             {
+                    'label': 'Education',
+                    'value': 11
+             },   
+             {
+                    'label': 'Arquitecture and urban planning',
+                    'value': 1
+             },   
+             {
+                    'label': 'Engineering',
+                    'value': 14
+             },
+             {
+                    'label': 'Health care',
+                    'value': 18
+             },
+             {
+                    'label': 'Medicine',
+                    'value': 15
+             },
+             {
+                    'label': 'Recreation and Sports',
+                    'value': 17
+             },
+             {
+                    'label': 'Economy',
+                    'value': 10
+             },
+             {
+                    'label': 'Accounting and related',
+                    'value': 8
+             },
+             {
+                    'label': 'Psychology',
+                    'value': 16
+             },   
+             {
+                    'label': 'Nursing',
+                    'value': 12
+             }   
             ],
-            value='value1'
+            value=1
             
         ),
 
