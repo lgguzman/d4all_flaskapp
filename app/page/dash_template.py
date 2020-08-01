@@ -374,7 +374,14 @@ def create_dashboard(server):
         # year = ano,
         # ref_grp_index = grupo_de_referencia,
         # greather_or_equal = 1
-        traces = get_traces(cty_sk=range_slider_com[0],ctc_rd=range_slider_quam[0],cmm_sk=range_slider_comm[0],qtt_tk=range_slider_qthinking[0],year=dropdown_ano,ref_grp_index=10,greather_or_equal=1,fl_sk=dropdown_foreign )
+        # print(range_slider_comm)
+        # print(range_slider_com)
+        # print(range_slider_quam)
+        # print(range_slider_qthinking)
+        # print(dropdown_foreign)
+        # print(dropdown_profesion)
+        # print(dropdown_ano)
+        traces = get_traces(cty_sk=range_slider_com[0],ctc_rd=range_slider_quam[0],cmm_sk=range_slider_comm[0],qtt_tk=range_slider_qthinking[0],year=dropdown_ano,ref_grp_index=dropdown_profesion,greather_or_equal=1,fl_sk=dropdown_foreign )
         figure = dict(data=traces, layout=mmap.layout)
         return figure
 
