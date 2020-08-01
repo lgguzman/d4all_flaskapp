@@ -7,6 +7,9 @@ import pandas as pd
 import plotly.express as px
 
 ######### APP STRUCTURE #########
+from sklearn.cluster import DBSCAN
+
+from app.dashboard.dashboard import DataBaseDashboard
 from app.libpage import sidebar, content, sidebar_r, mmap
 
 
@@ -17,6 +20,8 @@ def create_dashboard(server):
         routes_pathname_prefix='/dashapp/',
         external_stylesheets=[dbc.themes.BOOTSTRAP, 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css']
     )
+
+    connection = DataBaseDashboard()
 
     ###########################################################################################
     # Data Manipulation / Model
@@ -265,27 +270,62 @@ def create_dashboard(server):
     def update_perfil_div_comm(range_slider_comm, check_list_comm):
         return selected_skill(range_slider_comm, check_list_comm)
 
-    def get_traces():
+    def data_for_map(df1):
+        dbs = DBSCAN(eps=600 / 6371,
+                     min_samples=1,
+                     metric='haversine').fit(df1[['Longitud', 'Latitud']],
+                                             sample_weight=df1['count'])
+        df1["clus_db"] = dbs.labels_
+        count_cluster_grouped = df1.groupby('clus_db'). \
+            sum().sort_values(by='count', ascending=False). \
+            reset_index()
+        df2 = df1[df1['clus_db'].isin(list(count_cluster_grouped.clus_db))]
+        return df2
+
+    def get_traces(cty_sk=2,
+                   ctc_rd=4,
+                   fl_sk="0",
+                   cmm_sk=4,
+                   qtt_tk=4,
+                   year="2018",
+                   ref_grp_index=10,
+                   greather_or_equal=1):
 
         try:
-            with open('/home/ec2-user/data4all/app/data/df.json') as json_file:
-                data = json.load(json_file)
-                df = pd.DataFrame(data)
-                print(df.head())
-                traces = []
-                for ctype, dfff in df.groupby('Clus_km'):
-                    trace = dict(
-                        type='scattermapbox',
-                        lon=dfff['Longitud'],
-                        lat=dfff['Latitud'],
-                        name=str(ctype),
-                        marker=dict(
-                            size=4,
-                            opacity=0.6,
-                        )
+            df1 = connection.fetch_info(cty_sk, ctc_rd, fl_sk, cmm_sk, qtt_tk, year, ref_grp_index, greather_or_equal)
+            df2 = data_for_map(df1)
+            # with open('/home/ec2-user/data4all/app/data/df.json') as json_file:
+            #     data = json.load(json_file)
+            #     df = pd.DataFrame(data)
+            #     print(df.head())
+            #     traces = []
+            #     for ctype, dfff in df.groupby('Clus_km'):
+            #         trace = dict(
+            #             type='scattermapbox',
+            #             lon=dfff['Longitud'],
+            #             lat=dfff['Latitud'],
+            #             name=str(ctype),
+            #             marker=dict(
+            #                 size=4,
+            #                 opacity=0.6,
+            #             )
+            #         )
+            #         traces.append(trace)
+            #     return traces
+            traces = []
+            for ctype, dfff in df2.groupby('clus_db'):
+                trace = dict(
+                    type='scattermapbox',
+                    lon=dfff['Longitud'],
+                    lat=dfff['Latitud'],
+                    name=str(ctype),
+                    marker=dict(
+                        size=dfff["count"].apply(lambda x: min(max(x,10),30)),
+                        opacity=0.8,
                     )
-                    traces.append(trace)
-                return traces
+                )
+                traces.append(trace)
+            return traces
         except Exception as inst:
             print(type(inst))    # the exception instance
             print(inst.args)     # arguments stored in .args
@@ -307,6 +347,7 @@ def create_dashboard(server):
                        [State('range_slider_comm', 'value'), State('check_list_comm', 'value'),
                         State('range_slider_com', 'value'), State('check_list_com', 'value'),
                         State('range_slider_quam', 'value'), State('check_list_quam', 'value'),
+                        State('range_slider_qthinking', 'value'), State('check_list_qthinking', 'value'),
                         State('dropdown_foreign', 'value'), State('check_list_foreign', 'value'),
                         State('dropdown_config', 'value') ,
                         State('dropdown_profesion', 'value') ,
@@ -318,12 +359,22 @@ def create_dashboard(server):
                          range_slider_comm, check_list_comm,
                          range_slider_com, check_list_com,
                          range_slider_quam, check_list_quam,
+                         range_slider_qthinking, check_list_qthinking,
                          dropdown_foreign, check_list_foreign,
                          dropdown_config,
                          dropdown_profesion,
                          dropdown_ano,
                          dropdown_search):
-        traces = get_traces()
+
+        # cty_sk = competencia ciudad,
+        # ctc_rd = lectura_escrita,
+        # fl_sk = idioma,
+        # cmm_sk = comunicacion_sescrita,
+        # qtt_tk = razon cuantita,
+        # year = ano,
+        # ref_grp_index = grupo_de_referencia,
+        # greather_or_equal = 1
+        traces = get_traces(cty_sk=range_slider_com[0],ctc_rd=range_slider_quam[0],cmm_sk=range_slider_comm[0],qtt_tk=range_slider_qthinking[0],year=dropdown_ano,ref_grp_index=10,greather_or_equal=1,fl_sk=dropdown_foreign )
         figure = dict(data=traces, layout=mmap.layout)
         return figure
 

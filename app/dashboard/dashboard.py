@@ -15,6 +15,8 @@ class DataBaseDashboard:
         DB_DATABASE = 'icfes'
         DB_USERNAME = 'team17'
         DB_PASSWORD = 'team171234'
+        self.ref_grp = pd.read_csv("app/data/reference_groups.csv", encoding="utf-8")
+        self.coord = pd.read_excel('app/data/Coordenadas_Colombia_202061.xls')
         self.engine = create_engine(f'postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOSTNAME}/{DB_DATABASE}',
                                     pool_pre_ping=True)
 
@@ -31,6 +33,71 @@ class DataBaseDashboard:
         from_select = " FROM " + database
         limit_select = " LIMIT " + str(limit)
         return pd.read_sql_query(select + count + from_select + limit_select, con=self.engine)
+
+    def fetch_info(self, cty_sk,
+                   ctc_rd,
+                   fl_sk,
+                   cmm_sk,
+                   qtt_tk,
+                   year,
+                   ref_grp_index,
+                   greather_or_equal):
+        t = sorted(list(self.ref_grp["GRUPOREFERENCIA"].unique()))
+        cmp2 = "("
+        for l in list(self.ref_grp[self.ref_grp["GRUPOREFERENCIA"] == t[ref_grp_index]]["ESTU_SNIES_PRGMACADEMICO"]):
+            cmp2 = cmp2 + str(l) + ","
+        cmp2 = cmp2[:-1] + ")"
+        icfes_qry = '''select 
+                    count("ESTU_SNIES_PRGMACADEMICO"),
+                    "ESTU_INST_CODMUNICIPIO"'''
+        icfes_qry = icfes_qry + \
+                    "from " + "gene" + year + "3"
+        if greather_or_equal == 0:
+            cmp0 = '''"MOD_COMPETEN_CIUDADA_DESEM" = ''' + str(cty_sk) + ''' and ''' + \
+                   '''"MOD_LECTURA_CRITICA_DESEM" = ''' + str(ctc_rd) + ''' and ''' + \
+                   '''"MOD_COMUNI_ESCRITA_DESEM" = ''' + str(cmm_sk) + ''' and ''' + \
+                   '''"MOD_RAZONA_CUANTITAT_DESEM" = ''' + str(qtt_tk) + ''' and ''' + \
+                   '''"MOD_INGLES_DESEM" in '''
+            if fl_sk == "0":
+                cmp1 = "('-A1')"
+            elif fl_sk == "1":
+                cmp1 = "('A1')"
+            elif fl_sk == "2":
+                cmp1 = "('A2')"
+            elif fl_sk == "3":
+                cmp1 = "('B1')"
+            else:
+                cmp1 = "('B2')"
+            cmp0 = cmp0 + cmp1
+        else:
+            cmp0 = '''"MOD_COMPETEN_CIUDADA_DESEM" >= ''' + str(cty_sk) + ''' and ''' + \
+                   '''"MOD_LECTURA_CRITICA_DESEM" >= ''' + str(ctc_rd) + ''' and ''' + \
+                   '''"MOD_COMUNI_ESCRITA_DESEM" >= ''' + str(cmm_sk) + ''' and ''' + \
+                   '''"MOD_RAZONA_CUANTITAT_DESEM" >= ''' + str(qtt_tk) + ''' and ''' + \
+                   '''"MOD_INGLES_DESEM" in '''
+            if fl_sk == "0":
+                cmp1 = "('-A1','A1','A2','B1','B2')"
+            elif fl_sk == "1":
+                cmp1 = "('A1','A2','B1','B2')"
+            elif fl_sk == "2":
+                cmp1 = "('A2','B1','B2')"
+            elif fl_sk == "3":
+                cmp1 = "('B1','B2')"
+            else:
+                cmp1 = "('B2')"
+            cmp0 = cmp0 + cmp1
+        icfes_qry = icfes_qry + " where " + cmp0 + \
+                    '''and "ESTU_SNIES_PRGMACADEMICO" in ''' + cmp2 + \
+                    ''' GROUP BY "ESTU_INST_CODMUNICIPIO";'''
+        icfes_df = pd.read_sql_query(icfes_qry, con=self.engine)
+        icfes_df = pd.merge(icfes_df,
+                            self.coord,
+                            how='inner',
+                            left_on=['ESTU_INST_CODMUNICIPIO'],
+                            right_on=['Código municipio'])
+        icfes_df.drop_duplicates(['ESTU_INST_CODMUNICIPIO'],
+                                 keep='first', inplace=True)
+        return icfes_df
 
 
 

@@ -170,7 +170,7 @@ controls = dbc.FormGroup(
         ############### quantitative thinking skills  ##############
 
         dbc.Card([dbc.Checklist(
-            id='check_list_prof',
+            id='check_list_qthinking',
             options=[
                 {
                     'label': 'Quantitative thinking skills',
