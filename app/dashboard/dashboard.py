@@ -6,7 +6,7 @@ import plotly.express as px
 from dash.dependencies import Output
 from dash.dependencies import Input
 from sqlalchemy import create_engine
-
+import os
 
 class DataBaseDashboard:
 
@@ -14,7 +14,7 @@ class DataBaseDashboard:
         DB_HOSTNAME = 'ds4a-team-17-project.cjq7gkzfvgm7.us-east-1.rds.amazonaws.com'
         DB_DATABASE = 'icfes'
         DB_USERNAME = 'team17'
-        DB_PASSWORD = 'team171234'
+        DB_PASSWORD = os.environ.get('DB_PASS')
         try:
             self.ref_grp = pd.read_csv("/home/ec2-user/data4all/app/data/reference_groups.csv", encoding="utf-8")
             self.coord = pd.read_excel('/home/ec2-user/data4all/app/data/Coordenadas_Colombia_202061.xls')
