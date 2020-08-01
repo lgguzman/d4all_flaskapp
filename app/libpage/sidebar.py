@@ -84,7 +84,7 @@ controls = dbc.FormGroup(
         ),
         ############# Foreign language  ###################
         html.Br(),
-        html.B('Foreign language skills'),
+        html.B('English language skills'),
         
         dcc.Dropdown(
             id='dropdown_foreign',
@@ -251,16 +251,16 @@ controls = dbc.FormGroup(
         ## rafael ###
         ############# años
         html.Br(),
-        html.B('TYPE OF SEARCH', style={
+        html.B('TYPE OF Search', style={
             'textAlign': 'left'
         }),
         dcc.Dropdown(
             id='dropdown_search',
             options=[
-                {'label': 'Cluster top', 'value': 0},
-                {'label': 'Cluster min', 'value': 1},
-                {'label': 'All', 'value':2},
-                {'label': 'Default', 'value':3}
+                {'label': 'Highest Density', 'value': 0},
+                {'label': 'Lowest Density', 'value': 1},
+                {'label': 'Minimum requirements', 'value':2},
+                {'label': 'Default (All)', 'value':3}
             ],
             value=3
         ),
