@@ -282,13 +282,23 @@ def create_dashboard(server):
                           minimun_number_of_elements=0,
                           criterium='all'):
         # criterium: ['max','min','all']
-        df3 = df2.sort_values(by=['count'])
-        df3 = df3[df3['count'] >= minimun_number_of_elements]
+        # df3 = df2.sort_values(by=['count'])
+        # df3 = df3[df3['count'] >= minimun_number_of_elements]
+        # if criterium == 'min':
+        #     df3 = df3.head(2)
+        # elif criterium == 'max':
+        #     df3 = df3.tail(2)
+        # return df3
+        count_cluster_grouped = df2.groupby('clus_db').sum().sort_values(by='count', ascending=False)
+
+        count_clus_filtered = count_cluster_grouped[count_cluster_grouped['count'] >= minimun_number_of_elements]
+        count_clus_filtered.reset_index(inplace=True)
+
         if criterium == 'min':
-            df3 = df3.head(2)
+            return df2[df2['clus_db'] == int(count_clus_filtered.head(n=1).clus_db)]
         elif criterium == 'max':
-            df3 = df3.tail(2)
-        return df3
+            return df2[df2['clus_db'] == int(count_clus_filtered.tail(n=1).clus_db)]
+        return df2
 
     def get_traces(cty_sk=2,
                    ctc_rd=4,
@@ -304,12 +314,14 @@ def create_dashboard(server):
             df1 = connection.fetch_info(cty_sk, ctc_rd, fl_sk, cmm_sk, qtt_tk, year, ref_grp_index, greather_or_equal)
             df2 = cluster_selection(df2=data_for_map(df1), criterium=criterium)
             traces = []
+
             for ctype, dfff in df2.groupby('clus_db'):
                 trace = dict(
                     type='scattermapbox',
                     lon=dfff['Longitud'],
                     lat=dfff['Latitud'],
                     name=str(ctype),
+                    text=dfff['Nombre municipio'],
                     marker=dict(
                         size=dfff["count"].apply(lambda x: min(max(x,10),30)),
                         opacity=0.8,
@@ -368,26 +380,32 @@ def create_dashboard(server):
         figure = dict(data=traces, layout=mmap.layout)
         return figure
 
-    # @dash_app.callback([Output('graph_1', 'figure'),
-    #                     Output('graph_2', 'figure'),
-    #                     Output('graph_3', 'figure'),
-    #                     Output('graph_4', 'figure'),
-    #                     Output('graph_5', 'figure'),
-    #                     ],
-    #                    [Input('submit_button', 'n_clicks')],
-    #                    [State('dropdown_profesion', 'value'),
-    #                     State('dropdown_ano', 'value'),
-    #
-    #                     ])
-    # def make_others_figure(submit_button,
-    #                      dropdown_profesion,
-    #                      dropdown_ano ):
-    #     data = connection.data_for_dash_histograms(dropdown_profesion,dropdown_ano)
-    #     df5a = data[["MOD_COMPETEN_CIUDADA_DESEM"]]
-    #     df5a1 = df5a.groupby(["MOD_COMPETEN_CIUDADA_DESEM"])["MOD_COMPETEN_CIUDADA_DESEM"].count()
-    #     figure1 = px.bar(df5a1, x='label', y=column_lc, color=column_lc,
-    #                     labels={'label': 'Term', column_lc: 'Number of test takers [log]'});
-    #     return figure1
+    @dash_app.callback([Output('graph_1', 'figure'),
+                        Output('graph_2', 'figure'),
+                        Output('graph_3', 'figure'),
+                        Output('graph_4', 'figure'),
+                        Output('graph_5', 'figure'),
+                        ],
+                       [Input('submit_button', 'n_clicks')],
+                       [State('dropdown_profesion', 'value'),
+                        State('dropdown_ano', 'value'),
+
+                        ])
+    def make_others_figure(submit_button,
+                         dropdown_profesion,
+                         dropdown_ano ):
+        data = connection.data_for_dash_histograms(dropdown_profesion,dropdown_ano)
+        figure1 = px.bar(data.groupby(["MOD_COMPETEN_CIUDADA_DESEM"]).count().reset_index(), x='MOD_COMPETEN_CIUDADA_DESEM', y="MOD_INGLES_DESEM",
+                        labels={'MOD_COMPETEN_CIUDADA_DESEM': 'Community skills level', 'MOD_INGLES_DESEM': 'Count'} )
+        figure2 = px.bar(data.groupby(["MOD_LECTURA_CRITICA_DESEM"]).count().reset_index(), x='MOD_LECTURA_CRITICA_DESEM', y="MOD_INGLES_DESEM",
+                        labels={'MOD_LECTURA_CRITICA_DESEM': 'Critical reading skills level', 'MOD_INGLES_DESEM': 'Count'} )
+        figure3 = px.bar(data.groupby(["MOD_INGLES_DESEM"]).count().reset_index(), x='MOD_INGLES_DESEM', y="MOD_COMUNI_ESCRITA_DESEM" ,
+                        labels={'MOD_INGLES_DESEM': 'English language skills level', 'MOD_COMUNI_ESCRITA_DESEM': 'Count'} )
+        figure4 = px.bar(data.groupby(["MOD_COMUNI_ESCRITA_DESEM"]).count().reset_index(), x='MOD_COMUNI_ESCRITA_DESEM', y="MOD_INGLES_DESEM" ,
+                        labels={'MOD_COMUNI_ESCRITA_DESEM': 'Communicative skills level', 'MOD_INGLES_DESEM': 'Count'} )
+        figure5 = px.bar(data.groupby(["MOD_RAZONA_CUANTITAT_DESEM"]).count().reset_index(), x='MOD_RAZONA_CUANTITAT_DESEM', y="MOD_INGLES_DESEM",
+                        labels={'MOD_RAZONA_CUANTITAT_DESEM': 'Quantitative thinking skills level', 'MOD_INGLES_DESEM': 'Count'} )
+        return figure1, figure2, figure3, figure4, figure5
 
     # #############################################
     # # MAIN SERVER
