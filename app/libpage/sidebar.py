@@ -204,65 +204,80 @@ controls = dbc.FormGroup(
             options=[
             {
                 'label': 'Fine arts and Design',
-                'value': 1
-            },
-            {
-                'label': 'Natural and exact Sciences',
                 'value': 2
             },
             {
+                'label': 'Natural and exact Sciences',
+                'value': 5
+            },
+            {
                     'label': 'Social Sciences',
-                    'value': 3
+                    'value': 6
              },
              {
                     'label': 'Humanities',
-                    'value': 4
+                    'value': 13
              },   
              {
                     'label': 'Law',
-                    'value': 5
-             },   
-             {
-                    'label': 'Communication, journalism and advertising',
-                    'value': 6
-             },   
-             {
-                    'label': 'Military and naval Sciences',
-                    'value': 7
-             },   
-             {
-                    'label': 'Agricultural Sciences',
-                    'value': 8
-             },   
-             {
-                    'label': 'Management and related',
                     'value': 9
              },   
              {
-                    'label': 'Education',
-                    'value': 10
+                    'label': 'Communication, journalism and advertising',
+                    'value': 7
              },   
              {
-                    'label': 'Arquitecture and urban planning',
+                    'label': 'Military and naval Sciences',
+                    'value': 4
+             },   
+             {
+                    'label': 'Agricultural Sciences',
+                    'value': 3
+             },   
+             {
+                    'label': 'Management and related',
+                    'value': 0
+             },   
+             {
+                    'label': 'Education',
                     'value': 11
              },   
              {
+                    'label': 'Arquitecture and urban planning',
+                    'value': 1
+             },   
+             {
                     'label': 'Engineering',
-                    'value': 12
-             },
-             {
-                    'label': 'Health care',
-                    'value': 13
-             },
-             {
-                    'label': 'Medicine',
                     'value': 14
              },
              {
-                    'label': 'Technological in management and Tourism',
+                    'label': 'Health care',
+                    'value': 18
+             },
+             {
+                    'label': 'Medicine',
+                    'value': 15
+             },
+             {
+                    'label': 'Recreation and Sports',
+                    'value': 17
+             },
+             {
+                    'label': 'Economy',
+                    'value': 10
+             },
+             {
+                    'label': 'Accounting and related',
+                    'value': 8
+             },
+             {
+                    'label': 'Psychology',
                     'value': 16
              },   
-                
+             {
+                    'label': 'Nursing',
+                    'value': 12
+             }   
             ],
             value=1
             
