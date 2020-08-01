@@ -294,9 +294,9 @@ def create_dashboard(server):
         count_clus_filtered = count_cluster_grouped[count_cluster_grouped['count'] >= minimun_number_of_elements]
         count_clus_filtered.reset_index(inplace=True)
 
-        if criterium == 'min':
+        if criterium == 'max':
             return df2[df2['clus_db'] == int(count_clus_filtered.head(n=1).clus_db)]
-        elif criterium == 'max':
+        elif criterium == 'min':
             return df2[df2['clus_db'] == int(count_clus_filtered.tail(n=1).clus_db)]
         return df2
 
