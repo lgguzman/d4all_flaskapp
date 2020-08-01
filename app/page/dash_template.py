@@ -302,7 +302,7 @@ def create_dashboard(server):
 
         try:
             df1 = connection.fetch_info(cty_sk, ctc_rd, fl_sk, cmm_sk, qtt_tk, year, ref_grp_index, greather_or_equal)
-            df2 = cluster_selection(data_for_map(df1), criterium)
+            df2 = cluster_selection(df2=data_for_map(df1), criterium=criterium)
             traces = []
             for ctype, dfff in df2.groupby('clus_db'):
                 trace = dict(
