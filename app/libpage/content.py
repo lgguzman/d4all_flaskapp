@@ -45,65 +45,65 @@ def getHeader(app):
     )
 
 ## first row
-content_first_row = dbc.Row([
-    dbc.Col(
-        dbc.Card(
-            [
-
-                dbc.CardBody(
-                    [
-                        html.H4(id='card_title_1', children=['Card Title 1'], className='card-title',
-                                style=CARD_TEXT_STYLE),
-                        html.P(id='card_text_1', children=['Sample text.'], style=CARD_TEXT_STYLE),
-                    ]
-                )
-            ]
-        ),
-        md=3
-    ),
-    dbc.Col(
-        dbc.Card(
-            [
-
-                dbc.CardBody(
-                    [
-                        html.H4('Card Title 2', className='card-title', style=CARD_TEXT_STYLE),
-                        html.P('Sample text.', style=CARD_TEXT_STYLE),
-                    ]
-                ),
-            ]
-
-        ),
-        md=3
-    ),
-    dbc.Col(
-        dbc.Card(
-            [
-                dbc.CardBody(
-                    [
-                        html.H4('Card Title 3', className='card-title', style=CARD_TEXT_STYLE),
-                        html.P('Sample text.', style=CARD_TEXT_STYLE),
-                    ]
-                ),
-            ]
-
-        ),
-        md=3
-    ),
-    dbc.Col(
-        dbc.Card(
-            [
-                dbc.CardBody(
-                    [
-                        html.H4('Card Title 4', className='card-title', style=CARD_TEXT_STYLE),
-                        html.P('Sample text.', style=CARD_TEXT_STYLE),
-                    ]
-                ),
-            ]
-        ),
-        md=3
-    )
-])
+# content_first_row = dbc.Row([
+#     dbc.Col(
+#         dbc.Card(
+#             [
+#
+#                 dbc.CardBody(
+#                     [
+#                         html.H4(id='card_title_1', children=['Card Title 1'], className='card-title',
+#                                 style=CARD_TEXT_STYLE),
+#                         html.P(id='card_text_1', children=['Sample text.'], style=CARD_TEXT_STYLE),
+#                     ]
+#                 )
+#             ]
+#         ),
+#         md=3
+#     ),
+#     dbc.Col(
+#         dbc.Card(
+#             [
+#
+#                 dbc.CardBody(
+#                     [
+#                         html.H4('Card Title 2', className='card-title', style=CARD_TEXT_STYLE),
+#                         html.P('Sample text.', style=CARD_TEXT_STYLE),
+#                     ]
+#                 ),
+#             ]
+#
+#         ),
+#         md=3
+#     ),
+#     dbc.Col(
+#         dbc.Card(
+#             [
+#                 dbc.CardBody(
+#                     [
+#                         html.H4('Card Title 3', className='card-title', style=CARD_TEXT_STYLE),
+#                         html.P('Sample text.', style=CARD_TEXT_STYLE),
+#                     ]
+#                 ),
+#             ]
+#
+#         ),
+#         md=3
+#     ),
+#     dbc.Col(
+#         dbc.Card(
+#             [
+#                 dbc.CardBody(
+#                     [
+#                         html.H4('Card Title 4', className='card-title', style=CARD_TEXT_STYLE),
+#                         html.P('Sample text.', style=CARD_TEXT_STYLE),
+#                     ]
+#                 ),
+#             ]
+#         ),
+#         md=3
+#     )
+# ])
 ### second row
 content_second_row = dbc.Row(
     [
@@ -132,6 +132,16 @@ content_fourth_row = dbc.Row(
         ),
         dbc.Col(
             dcc.Graph(id='graph_6'), md=6
+        )
+    ]
+)
+content_fifth_row = dbc.Row(
+    [
+        dbc.Col(
+            dcc.Graph(id='graph_7'), md=6
+        ),
+        dbc.Col(
+            dcc.Graph(id='graph_8'), md=6
         )
     ]
 )
@@ -212,10 +222,11 @@ def getFooterIcons(app):
 ############ right side ##############
 content = html.Div(
     [
-        content_first_row,
+        # content_first_row,
         content_second_row,
         content_third_row,
-        content_fourth_row
+        content_fourth_row,
+        content_fifth_row
     ],
     style=CONTENT_STYLE
 )
