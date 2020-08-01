@@ -239,7 +239,7 @@ controls = dbc.FormGroup(
 
         ############# años
         html.Br(),
-        html.B('Choose a year', style={
+        html.B('CHOOSE A YEAR', style={
             'textAlign': 'left'
         }),
         dcc.Dropdown(
