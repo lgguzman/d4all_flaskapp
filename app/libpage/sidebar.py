@@ -44,25 +44,14 @@ controls = dbc.FormGroup(
             value=0
         ),
 
-        ########### community skills ##########
         html.Br(),
 
         html.B('CHOOSE THE PROFILE', style={
             'textAlign': 'center'
         }),
-
-
-
-        dbc.Card([dbc.Checklist(
-            id='check_list_com',
-            options=[{
-                'label': 'Community skills',
-                'value': 'comvalue'
-            }
-            ],
-            # value=['comvalue'],
-            inline=True
-        )]),
+        ########### community skills ##########
+        html.Br(),
+        html.B('Community skills'),
         dcc.RangeSlider(
             id='range_slider_com',
             min=1,
@@ -78,16 +67,8 @@ controls = dbc.FormGroup(
         ),
 
         ############# Critical Reading skills #################
-        dbc.Card([dbc.Checklist(
-            id='check_list_quam',
-            options=[
-                {
-                    'label': 'Critical reading',
-                    'value': 'quamvalue'
-                }
-            ],
-            inline=True
-        )]),
+        html.Br(),
+        html.B('Critical reading skills'),
         dcc.RangeSlider(
             id='range_slider_quam',
             min=1,
@@ -102,19 +83,9 @@ controls = dbc.FormGroup(
             }
         ),
         ############# Foreign language  ###################
-
-        dbc.Card([dbc.Checklist(
-            id='check_list_foreign',
-            options=[
-                {
-                    'label': 'Foreign language skills',
-                    'value': 'forvalue'
-                },
-
-            ],
-
-            inline=True
-        )]),
+        html.Br(),
+        html.B('Foreign language skills'),
+        
         dcc.Dropdown(
             id='dropdown_foreign',
             options=[{
@@ -142,17 +113,8 @@ controls = dbc.FormGroup(
         ),
         ################ communication skills ############
 
-        dbc.Card([dbc.Checklist(
-            id='check_list_comm',
-            options=[
-                {
-                    'label': 'Communicative skills',
-                    'value': 'comyvalue'
-                }
-            ],
-
-            inline=True
-        )]),
+        html.Br(),
+        html.B('Communicative skills'),
         dcc.RangeSlider(
             id='range_slider_comm',
             min=1,
@@ -169,17 +131,8 @@ controls = dbc.FormGroup(
 
         ############### quantitative thinking skills  ##############
 
-        dbc.Card([dbc.Checklist(
-            id='check_list_qthinking',
-            options=[
-                {
-                    'label': 'Quantitative thinking skills',
-                    'value': 'qthinkingvalue'
-                }
-            ],
-
-            inline=True
-        )]),
+        html.Br(),
+        html.B('Quantitative thinking skills
         dcc.RangeSlider(
             id='range_slider_qthinking',
             min=1,
@@ -202,6 +155,10 @@ controls = dbc.FormGroup(
         dcc.Dropdown(
             id='dropdown_profesion',
             options=[
+            {
+                    'label': 'Management and related',
+                    'value': 0
+             },     
             {
                 'label': 'Fine arts and Design',
                 'value': 2
@@ -234,10 +191,7 @@ controls = dbc.FormGroup(
                     'label': 'Agricultural Sciences',
                     'value': 3
              },   
-             {
-                    'label': 'Management and related',
-                    'value': 0
-             },   
+               
              {
                     'label': 'Education',
                     'value': 11
@@ -303,10 +257,12 @@ controls = dbc.FormGroup(
         dcc.Dropdown(
             id='dropdown_search',
             options=[
-                {'label': 'Centralized', 'value': 0},
-                {'label': 'Decrentralized', 'value': 1}
+                {'label': 'Cluster top', 'value': 0},
+                {'label': 'Cluster min', 'value': 1},
+                {'label': 'All', 'value':2},
+                {'label': 'Default', 'value':3}
             ],
-            value=0
+            value=3
         ),
 
         ########### submit button ##############
