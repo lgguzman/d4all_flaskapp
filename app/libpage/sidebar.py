@@ -201,19 +201,70 @@ controls = dbc.FormGroup(
         }),
         dcc.Dropdown(
             id='dropdown_profesion',
-            options=[{
-                'label': 'Administracion',
-                'value': 'value1'
-            }, {
-                'label': 'Ingenieria',
-                'value': 'value2'
+            options=[
+            {
+                'label': 'Fine arts and Design',
+                'value': 1
             },
-                {
-                    'label': 'Comunicación social',
-                    'value': 'value3'
-                }
+            {
+                'label': 'Natural and exact Sciences',
+                'value': 2
+            },
+            {
+                    'label': 'Social Sciences',
+                    'value': 3
+             },
+             {
+                    'label': 'Humanities',
+                    'value': 4
+             },   
+             {
+                    'label': 'Law',
+                    'value': 5
+             },   
+             {
+                    'label': 'Communication, journalism and advertising',
+                    'value': 6
+             },   
+             {
+                    'label': 'Military and naval Sciences',
+                    'value': 7
+             },   
+             {
+                    'label': 'Agricultural Sciences',
+                    'value': 8
+             },   
+             {
+                    'label': 'Management and related',
+                    'value': 9
+             },   
+             {
+                    'label': 'Education',
+                    'value': 10
+             },   
+             {
+                    'label': 'Arquitecture and urban planning',
+                    'value': 11
+             },   
+             {
+                    'label': 'Engineering',
+                    'value': 12
+             },
+             {
+                    'label': 'Health care',
+                    'value': 13
+             },
+             {
+                    'label': 'Medicine',
+                    'value': 14
+             },
+             {
+                    'label': 'Technological in management and Tourism',
+                    'value': 16
+             },   
+                
             ],
-            value='value1'
+            value=1
             
         ),
 
