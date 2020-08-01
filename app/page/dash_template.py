@@ -27,10 +27,6 @@ def create_dashboard(server):
     # Data Manipulation / Model
     ###########################################################################################
     ########  niveles de desempeño ############################
-    ### nivel 1 : 0 - 125
-    ### nivel 2 : 126 a 156
-    ### nivel 3 : 157 a 198
-    ### nivel 4 : 199 a 300
     ## Fuente:  #https://www.icfes.gov.co/documents/20143/1210096/Niveles+de+desempeno+competencias+ciudadanas+Saber+Pro.pdf/ae70a#ad3-8ccc-7ac9-87ad-7197c96c6903
     df = {}
     # Pensamiento critico : razonamiento + lectura critica
@@ -282,6 +278,18 @@ def create_dashboard(server):
         df2 = df1[df1['clus_db'].isin(list(count_cluster_grouped.clus_db))]
         return df2
 
+    def cluster_selection(df2,
+                          minimun_number_of_elements=0,
+                          criterium='all'):
+        # criterium: ['max','min','all']
+        df3 = df2.sort_values(by=['count'])
+        df3 = df3[df3['count'] >= minimun_number_of_elements]
+        if criterium == 'min':
+            df3 = df3.head(2)
+        elif criterium == 'max':
+            df3 = df3.tail(2)
+        return df3
+
     def get_traces(cty_sk=2,
                    ctc_rd=4,
                    fl_sk="0",
@@ -289,29 +297,12 @@ def create_dashboard(server):
                    qtt_tk=4,
                    year="2018",
                    ref_grp_index=10,
-                   greather_or_equal=1):
+                   greather_or_equal=1,
+                   criterium='all'):
 
         try:
             df1 = connection.fetch_info(cty_sk, ctc_rd, fl_sk, cmm_sk, qtt_tk, year, ref_grp_index, greather_or_equal)
-            df2 = data_for_map(df1)
-            # with open('/home/ec2-user/data4all/app/data/df.json') as json_file:
-            #     data = json.load(json_file)
-            #     df = pd.DataFrame(data)
-            #     print(df.head())
-            #     traces = []
-            #     for ctype, dfff in df.groupby('Clus_km'):
-            #         trace = dict(
-            #             type='scattermapbox',
-            #             lon=dfff['Longitud'],
-            #             lat=dfff['Latitud'],
-            #             name=str(ctype),
-            #             marker=dict(
-            #                 size=4,
-            #                 opacity=0.6,
-            #             )
-            #         )
-            #         traces.append(trace)
-            #     return traces
+            df2 = cluster_selection(data_for_map(df1), criterium)
             traces = []
             for ctype, dfff in df2.groupby('clus_db'):
                 trace = dict(
@@ -365,143 +356,39 @@ def create_dashboard(server):
                          dropdown_profesion,
                          dropdown_ano,
                          dropdown_search):
-
-        # cty_sk = competencia ciudad,
-        # ctc_rd = lectura_escrita,
-        # fl_sk = idioma,
-        # cmm_sk = comunicacion_sescrita,
-        # qtt_tk = razon cuantita,
-        # year = ano,
-        # ref_grp_index = grupo_de_referencia,
-        # greather_or_equal = 1
-        # print(range_slider_comm)
-        # print(range_slider_com)
-        # print(range_slider_quam)
-        # print(range_slider_qthinking)
-        # print(dropdown_foreign)
-        # print(dropdown_profesion)
-        # print(dropdown_ano)
-        traces = get_traces(cty_sk=range_slider_com[0],ctc_rd=range_slider_quam[0],cmm_sk=range_slider_comm[0],qtt_tk=range_slider_qthinking[0],year=dropdown_ano,ref_grp_index=dropdown_profesion,greather_or_equal=dropdown_config,fl_sk=dropdown_foreign )
+        traces = get_traces(cty_sk=range_slider_com[0],
+                            ctc_rd=range_slider_quam[0],
+                            cmm_sk=range_slider_comm[0],
+                            qtt_tk=range_slider_qthinking[0],
+                            year=dropdown_ano,
+                            ref_grp_index=dropdown_profesion,
+                            greather_or_equal=dropdown_config,
+                            fl_sk=dropdown_foreign,
+                            criterium=dropdown_search)
         figure = dict(data=traces, layout=mmap.layout)
         return figure
 
-    # # @dash_app.callback(
-    # #    Output('graph_2', 'figure'),
-    # #    [Input('submit_button', 'n_clicks')],
-    # #    [State('dropdown', 'value'), State('range_slider', 'value'), State('check_list', 'value'),
-    # #     State('radio_items', 'value')
-    # #     ])
-    # def update_graph_2(n_clicks, dropdown_value, range_slider_value, check_list_value, radio_items_value):
-    #     print(n_clicks)
-    #     print(dropdown_value)
-    #     print(range_slider_value)
-    #     print(check_list_value)
-    #     print(radio_items_value)
-    #     fig = {
-    #         'data': [{
-    #             'x': [1, 2, 3],
-    #             'y': [3, 4, 5],
-    #             'type': 'bar'
-    #         }]
-    #     }
-    #     return fig
+    # @dash_app.callback([Output('graph_1', 'figure'),
+    #                     Output('graph_2', 'figure'),
+    #                     Output('graph_3', 'figure'),
+    #                     Output('graph_4', 'figure'),
+    #                     Output('graph_5', 'figure'),
+    #                     ],
+    #                    [Input('submit_button', 'n_clicks')],
+    #                    [State('dropdown_profesion', 'value'),
+    #                     State('dropdown_ano', 'value'),
     #
-    # # @dash_app.callback(
-    # #    Output('graph_3', 'figure'),
-    # #    [Input('submit_button', 'n_clicks')],
-    # #    [State('dropdown', 'value'), State('range_slider', 'value'), State('check_list', 'value'),
-    # #     State('radio_items', 'value')
-    # #     ])
-    # def update_graph_3(n_clicks, dropdown_value, range_slider_value, check_list_value, radio_items_value):
-    #     print(n_clicks)
-    #     print(dropdown_value)
-    #     print(range_slider_value)
-    #     print(check_list_value)
-    #     print(radio_items_value)
-    #     df = px.data.iris()
-    #     fig = px.density_contour(df, x='sepal_width', y='sepal_length')
-    #     return fig
-    #
-    # # @dash_app.callback(
-    # #    Output('graph_4', 'figure'),
-    # #    [Input('submit_button', 'n_clicks')],
-    # #    [State('dropdown', 'value'), State('range_slider', 'value'), State('check_list', 'value'),
-    # #     State('radio_items', 'value')
-    # #     ])
-    # def update_graph_4(n_clicks, dropdown_value, range_slider_value, check_list_value, radio_items_value):
-    #     print(n_clicks)
-    #     print(dropdown_value)
-    #     print(range_slider_value)
-    #     print(check_list_value)
-    #     print(radio_items_value)  # Sample data and figure
-    #     df = px.data.gapminder().query('year==2007')
-    #     fig = px.scatter_geo(df, locations='iso_alpha', color='continent',
-    #                          hover_name='country', size='pop', projection='natural earth')
-    #     fig.update_layout({
-    #         'height': 600
-    #     })
-    #     return fig
-    #
-    # # @dash_app.callback(
-    # #    Output('graph_5', 'figure'),
-    # #    [Input('submit_button', 'n_clicks')],
-    # #    [State('dropdown', 'value'), State('range_slider', 'value'), State('check_list', 'value'),
-    # #     State('radio_items', 'value')
-    # #     ])
-    # def update_graph_5(n_clicks, dropdown_value, range_slider_value, check_list_value, radio_items_value):
-    #     print(n_clicks)
-    #     print(dropdown_value)
-    #     print(range_slider_value)
-    #     print(check_list_value)
-    #     print(radio_items_value)  # Sample data and figure
-    #     df = px.data.iris()
-    #     fig = px.scatter(df, x='sepal_width', y='sepal_length')
-    #     return fig
-    #
-    # # @dash_app.callback(
-    # #    Output('graph_6', 'figure'),
-    # #    [Input('submit_button', 'n_clicks')],
-    # #    [State('dropdown', 'value'), State('range_slider', 'value'), State('check_list', 'value'),
-    # #     State('radio_items', 'value')
-    # #     ])
-    # def update_graph_6(n_clicks, dropdown_value, range_slider_value, check_list_value, radio_items_value):
-    #     print(n_clicks)
-    #     print(dropdown_value)
-    #     print(range_slider_value)
-    #     print(check_list_value)
-    #     print(radio_items_value)  # Sample data and figure
-    #     df = px.data.tips()
-    #     fig = px.bar(df, x='total_bill', y='day', orientation='h')
-    #     return fig
-    #
-    # # @dash_app.callback(
-    # #    Output('card_title_1', 'children'),
-    # #    [Input('submit_button', 'n_clicks')],
-    # #    [State('dropdown', 'value'), State('range_slider', 'value'), State('check_list', 'value'),
-    # #     State('radio_items', 'value')
-    # #     ])
-    # def update_card_title_1(n_clicks, dropdown_value, range_slider_value, check_list_value, radio_items_value):
-    #     print(n_clicks)
-    #     print(dropdown_value)
-    #     print(range_slider_value)
-    #     print(check_list_value)
-    #     print(radio_items_value)  # Sample data and figure
-    #     return 'Card Tile 1 change by call back'
-    #
-    # # @dash_app.callback(
-    # #    Output('card_text_1', 'children'),
-    # #    [Input('submit_button', 'n_clicks')],
-    # #    [State('dropdown', 'value'), State('range_slider', 'value'), State('check_list', 'value'),
-    # #     State('radio_items', 'value')
-    # #     ])
-    # def update_card_text_1(n_clicks, dropdown_value, range_slider_value, check_list_value, radio_items_value):
-    #     print(n_clicks)
-    #     print(dropdown_value)
-    #     print(range_slider_value)
-    #     print(check_list_value)
-    #     print(radio_items_value)  # Sample data and figure
-    #     return 'Card text change by call back'
-    #
+    #                     ])
+    # def make_others_figure(submit_button,
+    #                      dropdown_profesion,
+    #                      dropdown_ano ):
+    #     data = connection.data_for_dash_histograms(dropdown_profesion,dropdown_ano)
+    #     df5a = data[["MOD_COMPETEN_CIUDADA_DESEM"]]
+    #     df5a1 = df5a.groupby(["MOD_COMPETEN_CIUDADA_DESEM"])["MOD_COMPETEN_CIUDADA_DESEM"].count()
+    #     figure1 = px.bar(df5a1, x='label', y=column_lc, color=column_lc,
+    #                     labels={'label': 'Term', column_lc: 'Number of test takers [log]'});
+    #     return figure1
+
     # #############################################
     # # MAIN SERVER
     # #############################################

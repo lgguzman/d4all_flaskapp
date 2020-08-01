@@ -105,6 +105,25 @@ class DataBaseDashboard:
                                  keep='first', inplace=True)
         return icfes_df
 
+    def data_for_dash_histograms(self, ref_grp_index, year):
+        t = sorted(list(self.ref_grp["GRUPOREFERENCIA"].unique()))
+        cmp2 = "("
+        for l in list(self.ref_grp[self.ref_grp["GRUPOREFERENCIA"] == t[ref_grp_index]]["ESTU_SNIES_PRGMACADEMICO"]):
+            cmp2 = cmp2 + str(l) + ","
+        cmp2 = cmp2[:-1] + ")"
+        icfes_qry = '''select 
+                    "MOD_COMPETEN_CIUDADA_DESEM",
+                    "MOD_LECTURA_CRITICA_DESEM",
+                    "MOD_COMUNI_ESCRITA_DESEM",
+                    "MOD_RAZONA_CUANTITAT_DESEM",
+                    "MOD_INGLES_DESEM"'''
+        icfes_qry = icfes_qry + \
+                    "from " + "gene" + year + "3"
+        icfes_qry = icfes_qry + " where " + \
+                    ''' "ESTU_SNIES_PRGMACADEMICO" in ''' + cmp2 + ";"
+        icfes_df = pd.read_sql_query(icfes_qry, con=self.engine)
+        return icfes_df
+
 
 
 def get_bar_fig(connection, column, database):

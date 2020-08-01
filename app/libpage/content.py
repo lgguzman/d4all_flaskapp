@@ -128,20 +128,28 @@ content_third_row = dbc.Row(
 content_fourth_row = dbc.Row(
     [
         dbc.Col(
-            dcc.Graph(id='graph_5'), md=6
+            dcc.Graph(id='graph_1'), md=6
         ),
         dbc.Col(
-            dcc.Graph(id='graph_6'), md=6
+            dcc.Graph(id='graph_2'), md=6
         )
     ]
 )
 content_fifth_row = dbc.Row(
     [
         dbc.Col(
-            dcc.Graph(id='graph_7'), md=6
+            dcc.Graph(id='graph_3'), md=6
         ),
         dbc.Col(
-            dcc.Graph(id='graph_8'), md=6
+            dcc.Graph(id='graph_4'), md=6
+        )
+    ]
+)
+
+content_sixth_row = dbc.Row(
+    [
+        dbc.Col(
+            dcc.Graph(id='graph_5'), md=6
         )
     ]
 )
@@ -226,7 +234,8 @@ content = html.Div(
         content_second_row,
         content_third_row,
         content_fourth_row,
-        content_fifth_row
+        content_fifth_row,
+        content_sixth_row
     ],
     style=CONTENT_STYLE
 )

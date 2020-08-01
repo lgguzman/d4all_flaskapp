@@ -257,12 +257,11 @@ controls = dbc.FormGroup(
         dcc.Dropdown(
             id='dropdown_search',
             options=[
-                {'label': 'Highest Density', 'value': 0},
-                {'label': 'Lowest Density', 'value': 1},
-                {'label': 'Minimum requirements', 'value':2},
-                {'label': 'Default (All)', 'value':3}
+                {'label': 'Highest Density', 'value': "max"},
+                {'label': 'Lowest Density', 'value': "min"},
+                {'label': 'Default (All)', 'value': "all"}
             ],
-            value=3
+            value="all"
         ),
 
         ########### submit button ##############
