@@ -118,7 +118,8 @@ content_second_row = dbc.Row(
 content_third_row = dbc.Row(
     [
         dbc.Col(
-            dcc.Graph(id='map_1'), md=12
+            dcc.Loading(children=dcc.Graph(id='map_1'))
+            , md=12
         )
     ]
 )

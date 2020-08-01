@@ -119,26 +119,26 @@ controls = dbc.FormGroup(
             id='dropdown_foreign',
             options=[{
                 'label': '-A1',
-                'value': 'valuemA1'
+                'value': '0'
             }, {
                 'label': 'A1',
-                'value': 'valueA1'
+                'value': '1'
             },
                 {
                     'label': 'A2',
-                    'value': 'valueA1'
+                    'value': '2'
                 },
                 {
                     'label': 'B1',
-                    'value': 'valueB1'
+                    'value': '3'
                 },
                 {
                     'label': 'B2',
-                    'value': 'valueA1'
+                    'value': '4'
                 }
             
             ],
-            value='valueA1'
+            value='1'
         ),
         ################ communication skills ############
 
@@ -235,7 +235,7 @@ controls = dbc.FormGroup(
             'textAlign': 'left'
         }),
         dcc.Dropdown(
-            id='display-dropdown',
+            id='dropdown_search',
             options=[
                 {'label': 'Centralized', 'value': 0},
                 {'label': 'Decrentralized', 'value': 1}

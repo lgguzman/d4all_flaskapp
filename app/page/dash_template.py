@@ -201,22 +201,22 @@ def create_dashboard(server):
     ######## listing to idioma extrangero ##################
     @dash_app.callback(
         Output(component_id='div_ingles', component_property='children'),
-        [Input('range_slider_foreign', 'value'), Input('check_list_foreign', 'value')]
+        [Input('dropdown_foreign', 'value'), Input('check_list_foreign', 'value')]
     )
-    def update_perfil_div_ingles(range_slider_foreign, check_list_foreign):
+    def update_perfil_div_ingles(dropdown_foreign, check_list_foreign):
         nivel1 = df["ingles"][0]
         nivel2 = df["ingles"][1]
         nivel3 = df["ingles"][2]
         nivel4 = df["ingles"][3]
         # output= df["ingles"][range_slider_foreign[0]-1]
         output = ''
-        if range_slider_foreign[0] == 1:
+        if dropdown_foreign == "1":
             output = nivel1
-        elif range_slider_foreign[0] == 2:
+        elif dropdown_foreign == "2":
             output = nivel1 + nivel2
-        elif range_slider_foreign[0] == 3:
+        elif dropdown_foreign == "3":
             output = nivel1 + nivel2 + nivel3
-        elif range_slider_foreign[0] == 4:
+        elif dropdown_foreign == "4":
             output = nivel1 + nivel2 + nivel3 + nivel4
 
         if not check_list_foreign:
@@ -226,10 +226,10 @@ def create_dashboard(server):
 
     @dash_app.callback(
         Output(component_id='div_ingles', component_property='style'),
-        [Input('range_slider_foreign', 'value'), Input('check_list_foreign', 'value')]
+        [Input('dropdown_foreign', 'value'), Input('check_list_foreign', 'value')]
     )
-    def update_perfil_div_ingles(range_slider_foreign, check_list_foreign):
-        return selected_skill(range_slider_foreign, check_list_foreign)
+    def update_perfil_div_ingles(dropdown_foreign, check_list_foreign):
+        return selected_skill([int(dropdown_foreign)], check_list_foreign)
 
     ######## listing to habilidades comunicativas ##################
     @dash_app.callback(
@@ -303,8 +303,26 @@ def create_dashboard(server):
             )]
 
     @dash_app.callback(Output('map_1', 'figure'),
-                       [Input('range_slider_comm', 'value')])
-    def make_main_figure(range_slider_comm):
+                       [ Input('submit_button', 'n_clicks') ],
+                       [State('range_slider_comm', 'value'), State('check_list_comm', 'value'),
+                        State('range_slider_com', 'value'), State('check_list_com', 'value'),
+                        State('range_slider_quam', 'value'), State('check_list_quam', 'value'),
+                        State('dropdown_foreign', 'value'), State('check_list_foreign', 'value'),
+                        State('dropdown_config', 'value') ,
+                        State('dropdown_profesion', 'value') ,
+                        State('dropdown_ano', 'value') ,
+                        State('dropdown_search', 'value') ,
+
+                        ])
+    def make_main_figure(submit_button,
+                         range_slider_comm, check_list_comm,
+                         range_slider_com, check_list_com,
+                         range_slider_quam, check_list_quam,
+                         dropdown_foreign, check_list_foreign,
+                         dropdown_config,
+                         dropdown_profesion,
+                         dropdown_ano,
+                         dropdown_search):
         traces = get_traces()
         figure = dict(data=traces, layout=mmap.layout)
         return figure
