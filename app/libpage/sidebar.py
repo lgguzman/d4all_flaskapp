@@ -132,7 +132,7 @@ controls = dbc.FormGroup(
         ############### quantitative thinking skills  ##############
 
         html.Br(),
-        html.B('Quantitative thinking skills
+        html.B('Quantitative thinking skills'),
         dcc.RangeSlider(
             id='range_slider_qthinking',
             min=1,
