@@ -88,38 +88,52 @@ def getComponent(app):
                     ),
 
                     html.Hr(),
-                    html.H5('Community skills:',
+                    html.H5('Community skills',
                             id='h5_com',
                             style={
                                 'textAlign': 'left',
-                                'boder': '1px solid black'
+                                'boder': '1px solid black',
+                                 'width':'100%'
                             }),
 
                     html.Div(id='div_comunitaria', className='card-text'),
 
-                    html.H5('Critical thinking',
-                            id='h5_pcritico',
+                    html.H5('Critical reading',
+                            id='h5_readcritical',
                             style={
                                 'textAlign': 'left',
-                                'boder': '1px solid black'
+                                'boder': '1px solid black',
+                                 'width':'100%'
                             }),
+                            
                     html.Div(id='div_pcritico', className='card-text'),
-                    html.H5('Communicative skills', style={
+                    
+                    html.H5('Communicative skills',
+                    id='h5_comm',
+                    style={
                         'textAlign': 'left',
-                        'boder': '1px solid black'
+                        'boder': '1px solid black',
+                         'width':'100%'
                     }),
                     html.Div(id='div_comescrita'),
-                    html.H5('Foreign language Skills', style={
+                    html.H5('English language Skills',
+                    id='h5_ingles',
+                    style={
                         'textAlign': 'left',
-                        'boder': '1px solid black'
+                        'boder': '1px solid black',
+                         'width':'100%'
                     }),
 
                     html.Div(id='div_ingles', className='card-text'),
-                    html.H5('Professional competence', style={
+                    
+                    html.H5('Quantitative Thinking skills',
+                    id='h5_qthinking',
+                    style={
                         'textAlign': 'left',
-                        'boder': '1px solid black'
+                        'boder': '1px solid black',
+                        'width':'100%'
                     }),
-                    html.Div(id='div_profesional', className='card-text'),
+                    html.Div(id='div_qthinking', className='card-text'),
 
                 ],
                 style={"width": "100%", 'border-radius': '25px'}

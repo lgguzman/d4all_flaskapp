@@ -29,16 +29,24 @@ def create_dashboard(server):
     ########  niveles de desempeño ############################
     ## Fuente:  #https://www.icfes.gov.co/documents/20143/1210096/Niveles+de+desempeno+competencias+ciudadanas+Saber+Pro.pdf/ae70a#ad3-8ccc-7ac9-87ad-7197c96c6903
     df = {}
-    # Pensamiento critico : razonamiento + lectura critica
+    # quantitative thinking
     df["pencritico"] = [
-        ' He/She has a notion of the authors communicative intention and could establish relationships of ' + \
-        ' similarity and order. ',
+        ' identify explicit information from a single source, which is presented in tables or bar graphs with little data ',
+        ' use simple arithmetic procedures from the given information ',
+        ' are able to argue the validity of procedures (arithmetic, algebraic and variational) ',
+        ' are capable of choosing the most appropriate procedure for solving problems '
+    ]
+    
+    # critical reading
+    df["readcritico"] = [
+        ' identify elements of the text such as the theme, structure, among others as well as the communicative intention of the author ', 
         ' Understands the global meaning of the text, identifies and interprets explicit information from ' + \
         ' different sources. In addition it applies simple arithmetic procedures. ',
         ' Is able to argue the validity of procedures (arithmetic, algebraic and variational) showing' + \
         ' the ability to project writings from that information. ',
         ' It is also capable of choosing the most appropriate procedure for solving problems. '
     ]
+
 
     # conocimiento de comunidad : abarca competencias ciudadanas
     df["competencias"] = [
