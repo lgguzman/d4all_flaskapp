@@ -309,7 +309,7 @@ def create_dashboard(server):
             traces = []
             colormap = []
             grouped = df2.groupby('clus_db')
-            for i in range(len(grouped)+5):
+            for i in range(50):
                 colormap.append('#%06X' % randint(0, 0xFFFFFF))
             for ctype, dfff in grouped:
                 trace = dict(
