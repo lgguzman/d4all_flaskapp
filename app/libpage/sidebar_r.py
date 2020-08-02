@@ -537,7 +537,7 @@ def getComponent(app):
             ],
             id="modal-centered",
              size='xl',
-             style={ 'box-shadow': '0 0 0 0.5em #007bff'}
+             style={ 'box-shadow': '0 0 0 0.1em #007bff'}
             
         )
 
