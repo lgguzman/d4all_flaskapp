@@ -311,23 +311,45 @@ def create_dashboard(server):
             grouped = df2.groupby('clus_db')
             for i in range(len(grouped)+5):
                 colormap.append('#%06X' % randint(0, 0xFFFFFF))
-            for ctype, dfff in grouped:
-                trace = dict(
-                    type='scattermapbox',
-                    lon=dfff['Longitud'],
-                    lat=dfff['Latitud'],
-                    name=ctype,
-                    text=dfff['Nombre municipio'],
-                    marker=dict(
-                        size=dfff["count"].apply(lambda x: min(max(x,8),40)),
-                        opacity=0.8,
-                        cmin=0,
-                        cmax=20,
-                        color=colormap[ctype],
-                        color_continuous_scale=px.colors.diverging.Tealrose,
-                        color_continuous_midpoint=1
+                
+            if criterium=='all':
+                for ctype, dfff in grouped:
+                    trace = dict(
+                        type='scattermapbox',
+                        lon=dfff['Longitud'],
+                        lat=dfff['Latitud'],
+                        name=ctype,
+                        text=dfff['Nombre municipio'],
+                        marker=dict(
+                            size=dfff["count"].apply(lambda x: min(max(x,8),40)),
+                            opacity=0.8,
+                            cmin=0,
+                            cmax=20,
+                            color=colormap[ctype],
+                            color_continuous_scale=px.colors.diverging.Tealrose,
+                            color_continuous_midpoint=1
+                        )
                     )
-                )
+             else:
+                for ctype, dfff in grouped:
+                    trace = dict(
+                        type='scattermapbox',
+                        lon=dfff['Longitud'],
+                        lat=dfff['Latitud'],
+                        name=ctype,
+                        text=dfff['Nombre municipio'],
+                        marker=dict(
+                            #size=dfff["count"].apply(lambda x: min(max(x,8),40)),
+                            opacity=0.8,
+                            cmin=0,
+                            cmax=20,
+                            #color=colormap[ctype],
+                            #color_continuous_scale=px.colors.diverging.Tealrose,
+                            #color_continuous_midpoint=1
+                        )
+                    )
+                
+                    
                 traces.append(trace)
             return traces
         except Exception as inst:
