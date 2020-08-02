@@ -30,8 +30,8 @@ def getHeader(app):
             ),
             dbc.Col(
                 [
-                    html.H4('An Intelligent System for Profile and Skill Identification of ' + \
-                            'Human Resources in Colombian Regions using Pruebas Saber Data',
+                    html.H4('Professional Locator: An Intelligent System for Profile and Skill Identification of ' + \
+                            'Human Resources in Colombian Regions',
                             style={'font-style': 'italic', 'text-align': 'center'}
                             ),
                     html.Hr()
@@ -45,65 +45,7 @@ def getHeader(app):
     )
 
 ## first row
-# content_first_row = dbc.Row([
-#     dbc.Col(
-#         dbc.Card(
-#             [
-#
-#                 dbc.CardBody(
-#                     [
-#                         html.H4(id='card_title_1', children=['Card Title 1'], className='card-title',
-#                                 style=CARD_TEXT_STYLE),
-#                         html.P(id='card_text_1', children=['Sample text.'], style=CARD_TEXT_STYLE),
-#                     ]
-#                 )
-#             ]
-#         ),
-#         md=3
-#     ),
-#     dbc.Col(
-#         dbc.Card(
-#             [
-#
-#                 dbc.CardBody(
-#                     [
-#                         html.H4('Card Title 2', className='card-title', style=CARD_TEXT_STYLE),
-#                         html.P('Sample text.', style=CARD_TEXT_STYLE),
-#                     ]
-#                 ),
-#             ]
-#
-#         ),
-#         md=3
-#     ),
-#     dbc.Col(
-#         dbc.Card(
-#             [
-#                 dbc.CardBody(
-#                     [
-#                         html.H4('Card Title 3', className='card-title', style=CARD_TEXT_STYLE),
-#                         html.P('Sample text.', style=CARD_TEXT_STYLE),
-#                     ]
-#                 ),
-#             ]
-#
-#         ),
-#         md=3
-#     ),
-#     dbc.Col(
-#         dbc.Card(
-#             [
-#                 dbc.CardBody(
-#                     [
-#                         html.H4('Card Title 4', className='card-title', style=CARD_TEXT_STYLE),
-#                         html.P('Sample text.', style=CARD_TEXT_STYLE),
-#                     ]
-#                 ),
-#             ]
-#         ),
-#         md=3
-#     )
-# ])
+
 ### second row
 content_second_row = dbc.Row(
     [
@@ -128,31 +70,28 @@ content_third_row = dbc.Row(
 content_fourth_row = dbc.Row(
     [
         dbc.Col(
-            dcc.Graph(id='graph_1'), md=6
+            dcc.Graph(id='graph_1'), md=4
         ),
         dbc.Col(
-            dcc.Graph(id='graph_2'), md=6
-        )
+            dcc.Graph(id='graph_2'), md=4
+        ),
+        dbc.Col(
+            dcc.Graph(id='graph_3'), md=4
+        ),
     ]
 )
 content_fifth_row = dbc.Row(
     [
+
         dbc.Col(
-            dcc.Graph(id='graph_3'), md=6
+            dcc.Graph(id='graph_4'), md=5
         ),
-        dbc.Col(
-            dcc.Graph(id='graph_4'), md=6
+dbc.Col(
+            dcc.Graph(id='graph_5'), md=5
         )
     ]
 )
 
-content_sixth_row = dbc.Row(
-    [
-        dbc.Col(
-            dcc.Graph(id='graph_5'), md=6
-        )
-    ]
-)
 
 def getFooter(app):
     return  dbc.Row(
@@ -235,7 +174,6 @@ content = html.Div(
         content_third_row,
         content_fourth_row,
         content_fifth_row,
-        content_sixth_row
     ],
     style=CONTENT_STYLE
 )

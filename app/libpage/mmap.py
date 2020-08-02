@@ -14,6 +14,7 @@ layout = dict(
     hovermode="closest",
     plot_bgcolor="#F9F9F9",
     paper_bgcolor="#F9F9F9",
+    mapbox_style="carto-darkmatter",
     showlegend=False,
     title='',
     mapbox=dict(

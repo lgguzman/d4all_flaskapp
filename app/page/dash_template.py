@@ -4,7 +4,9 @@ import dash_html_components as html
 from dash.dependencies import Input, Output, State
 import json
 import pandas as pd
+from random import randint
 import plotly.express as px
+import numpy as np
 
 ######### APP STRUCTURE #########
 from sklearn.cluster import DBSCAN
@@ -17,7 +19,7 @@ def create_dashboard(server):
     """Create a Plotly Dash dashboard."""
     dash_app = dash.Dash(
         server=server,
-        routes_pathname_prefix='/dashapp/',
+        # routes_pathname_prefix='/dashapp/',
         external_stylesheets=[dbc.themes.BOOTSTRAP, 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css']
     )
 
@@ -275,9 +277,9 @@ def create_dashboard(server):
         return selected_skill(range_slider_comm, check_list_comm)
 
     def data_for_map(df1):
-        dbs = DBSCAN(eps=600 / 6371,
+        dbs = DBSCAN(eps=15 / 6371,
                      min_samples=1,
-                     metric='haversine').fit(df1[['Longitud', 'Latitud']])#,sample_weight=df1['count'])
+                     metric='haversine').fit(np.radians(df1[['Longitud', 'Latitud']]))
         df1["clus_db"] = dbs.labels_
         count_cluster_grouped = df1.groupby('clus_db'). \
             sum().sort_values(by='count', ascending=False). \
@@ -288,14 +290,6 @@ def create_dashboard(server):
     def cluster_selection(df2,
                           minimun_number_of_elements=0,
                           criterium='all'):
-        # criterium: ['max','min','all']
-        # df3 = df2.sort_values(by=['count'])
-        # df3 = df3[df3['count'] >= minimun_number_of_elements]
-        # if criterium == 'min':
-        #     df3 = df3.head(2)
-        # elif criterium == 'max':
-        #     df3 = df3.tail(2)
-        # return df3
         count_cluster_grouped = df2.groupby('clus_db').sum().sort_values(by='count', ascending=False)
 
         count_clus_filtered = count_cluster_grouped[count_cluster_grouped['count'] >= minimun_number_of_elements]
@@ -321,17 +315,24 @@ def create_dashboard(server):
             df1 = connection.fetch_info(cty_sk, ctc_rd, fl_sk, cmm_sk, qtt_tk, year, ref_grp_index, greather_or_equal)
             df2 = cluster_selection(df2=data_for_map(df1), criterium=criterium)
             traces = []
+            colormap = []
+            grouped = df2.groupby('clus_db')
+            for i in range(50):
+                colormap.append('#%06X' % randint(0, 0xFFFFFF))
 
-            for ctype, dfff in df2.groupby('clus_db'):
+            for ctype, dfff in grouped:
                 trace = dict(
                     type='scattermapbox',
                     lon=dfff['Longitud'],
                     lat=dfff['Latitud'],
-                    name=str(ctype),
+                    name=ctype,
                     text=dfff['Nombre municipio'],
                     marker=dict(
-                        size=dfff["count"].apply(lambda x: min(max(x,10),30)),
+                        size=dfff["count"].apply(lambda x: min(max(x,8),40)),
                         opacity=0.8,
+                        cmin=0,
+                        cmax=20,
+                        color=colormap[ctype]
                     )
                 )
                 traces.append(trace)
@@ -351,6 +352,34 @@ def create_dashboard(server):
                     opacity=0.6,
                 )
             )]
+
+    def get_map(cty_sk=2,
+                   ctc_rd=4,
+                   fl_sk="0",
+                   cmm_sk=4,
+                   qtt_tk=4,
+                   year="2018",
+                   ref_grp_index=10,
+                   greather_or_equal=1,
+                   criterium='all'):
+
+
+        df1 = connection.fetch_info(cty_sk, ctc_rd, fl_sk, cmm_sk, qtt_tk, year, ref_grp_index,
+                                    greather_or_equal)
+        df2 = cluster_selection(df2=data_for_map(df1), criterium=criterium)
+
+
+        px.scatter_mapbox(df2,
+                          lat="Latitud",
+                          lon="Longitud",
+                          color="clus_db",
+                          color_continuous_scale=px.colors.cyclical.Phase,
+                          size_max=15,
+                          size="count",
+                          zoom=3.8,
+                          mapbox_style="carto-darkmatter",
+                          width=1200,
+                          height=800, )
 
     @dash_app.callback(Output('map_1', 'figure'),
                        [ Input('submit_button', 'n_clicks') ],
@@ -403,15 +432,15 @@ def create_dashboard(server):
                          dropdown_ano ):
         data = connection.data_for_dash_histograms(dropdown_profesion,dropdown_ano)
         figure1 = px.bar(data.groupby(["MOD_COMPETEN_CIUDADA_DESEM"]).count().reset_index(), x='MOD_COMPETEN_CIUDADA_DESEM', y="MOD_INGLES_DESEM",
-                        labels={'MOD_COMPETEN_CIUDADA_DESEM': 'Community skills level', 'MOD_INGLES_DESEM': 'Count'} )
+                        title='Community skills', labels={'MOD_COMPETEN_CIUDADA_DESEM': 'level', 'MOD_INGLES_DESEM': 'Frequency'} )
         figure2 = px.bar(data.groupby(["MOD_LECTURA_CRITICA_DESEM"]).count().reset_index(), x='MOD_LECTURA_CRITICA_DESEM', y="MOD_INGLES_DESEM",
-                        labels={'MOD_LECTURA_CRITICA_DESEM': 'Critical reading skills level', 'MOD_INGLES_DESEM': 'Count'} )
+                        title='Critical reading skills',labels={'MOD_LECTURA_CRITICA_DESEM': 'level', 'MOD_INGLES_DESEM': 'Frequency'} )
         figure3 = px.bar(data.groupby(["MOD_INGLES_DESEM"]).count().reset_index(), x='MOD_INGLES_DESEM', y="MOD_COMUNI_ESCRITA_DESEM" ,
-                        labels={'MOD_INGLES_DESEM': 'English language skills level', 'MOD_COMUNI_ESCRITA_DESEM': 'Count'} )
+                        title='English language skills',labels={'MOD_INGLES_DESEM': 'level', 'MOD_COMUNI_ESCRITA_DESEM': 'Frequency'} )
         figure4 = px.bar(data.groupby(["MOD_COMUNI_ESCRITA_DESEM"]).count().reset_index(), x='MOD_COMUNI_ESCRITA_DESEM', y="MOD_INGLES_DESEM" ,
-                        labels={'MOD_COMUNI_ESCRITA_DESEM': 'Communicative skills level', 'MOD_INGLES_DESEM': 'Count'} )
+                        title='Communicative skills',labels={'MOD_COMUNI_ESCRITA_DESEM': 'level', 'MOD_INGLES_DESEM': 'Frequency'} )
         figure5 = px.bar(data.groupby(["MOD_RAZONA_CUANTITAT_DESEM"]).count().reset_index(), x='MOD_RAZONA_CUANTITAT_DESEM', y="MOD_INGLES_DESEM",
-                        labels={'MOD_RAZONA_CUANTITAT_DESEM': 'Quantitative thinking skills level', 'MOD_INGLES_DESEM': 'Count'} )
+                        title='Quantitative thinking skills',labels={'MOD_RAZONA_CUANTITAT_DESEM': 'level', 'MOD_INGLES_DESEM': 'Frequency'} )
         return figure1, figure2, figure3, figure4, figure5
 
     # #############################################
