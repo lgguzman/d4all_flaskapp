@@ -209,7 +209,7 @@ def getComponent(app):
                 [
                     html.H4('Search parameter and Profile description', style={
                         'textAlign': 'center',
-                        'color': 'blue'})
+                        'color': '#007bff'})
                 ]
 
             ),
