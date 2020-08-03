@@ -3,7 +3,8 @@ The backend and Front end is managed by Dash framework, encapsulated in a genera
 
 ## Repository
 [Github]( https://github.com/lgguzman/d4all_flaskapp)
-##Architecture
+
+## Architecture
 The general architecture is composed by some services: 
 Front-end: We use Dash Framework to generate the interactive web-ui with Python . 
 Back-end: The Dash App is encapsulated in a Flask Server (The main idea is to use a general server, which lets us scale the project).
