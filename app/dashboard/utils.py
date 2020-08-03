@@ -8,16 +8,20 @@ from dash.dependencies import Input
 from sqlalchemy import create_engine
 import os
 
-class DataBaseDashboard:
+
+class DataBaseConnection:
 
     def __init__(self):
         DB_HOSTNAME = 'ds4a-team-17-project.cjq7gkzfvgm7.us-east-1.rds.amazonaws.com'
         DB_DATABASE = 'icfes'
         DB_USERNAME = 'team17'
         DB_PASSWORD = os.environ.get('DB_PASS')
+        ENV_PATH = os.environ.get('ENV_PATH')
+        if ENV_PATH is None:
+            ENV_PATH = "/home/ec2-user/data4all/app/"
         try:
-            self.ref_grp = pd.read_csv("/home/ec2-user/data4all/app/data/reference_groups.csv", encoding="utf-8")
-            self.coord = pd.read_excel('/home/ec2-user/data4all/app/data/Coordenadas_Colombia_202061.xls')
+            self.ref_grp = pd.read_csv(ENV_PATH + "data/reference_groups.csv", encoding="utf-8")
+            self.coord = pd.read_excel(ENV_PATH + 'data/Coordenadas_Colombia_202061.xls')
         except Exception as inst:
             print("unable to load data")
             print(type(inst))  # the exception instance
@@ -125,7 +129,6 @@ class DataBaseDashboard:
         return icfes_df
 
 
-
 def get_bar_fig(connection, column, database):
     data_final = connection.count(column, database)
     column_lc = column.lower()
@@ -136,12 +139,11 @@ def get_bar_fig(connection, column, database):
     return takers_fig
 
 
-def get_box_fig(connection, column,y, limit,  database):
+def get_box_fig(connection, column, y, limit, database):
     data_final = connection.get(column, y, limit, database)
     data_final['label'] = data_final['label'].apply(lambda x: str(x) + ' ')
     takers_fig = px.box(data_final, x='label', y='puntaje', color='label')
     return takers_fig
-
 
 
 def create_dashboard2(server):
@@ -151,7 +153,7 @@ def create_dashboard2(server):
         routes_pathname_prefix='/dashapp/'
     )
 
-    connection = DataBaseDashboard()
+    connection = DataBaseConnection()
     # App Layout
     dash_app.layout = html.Div(
         children=[
@@ -289,16 +291,18 @@ def create_dashboard2(server):
             ),
         ]
     )
+
     # Callback to generate error message
     # Also sets the data to be used
     # If there is an error use default data else use uploaded data
     @dash_app.callback(
         Output("plot", "figure"),
-        [Input("chart-type", "value"), Input("study-dropdown", "value"), Input("column-dropdown", "value"), Input("limit-dropdown", "value")]
+        [Input("chart-type", "value"), Input("study-dropdown", "value"), Input("column-dropdown", "value"),
+         Input("limit-dropdown", "value")]
     )
     def update_output(chart_type, database, column, limit):
-        return get_bar_fig(connection, column, database) if chart_type == 'bar' else get_box_fig(connection, column, "PUNT_GLOBAL", limit, database)
+        return get_bar_fig(connection, column, database) if chart_type == 'bar' else get_box_fig(connection, column,
+                                                                                                 "PUNT_GLOBAL", limit,
+                                                                                                 database)
 
     return dash_app.server
-
-

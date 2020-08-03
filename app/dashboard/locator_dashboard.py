@@ -12,8 +12,8 @@ from random import randint
 ######### APP STRUCTURE #########
 from sklearn.cluster import DBSCAN
 
-from app.dashboard.dashboard import DataBaseDashboard
-from app.libpage import sidebar, content, sidebar_r, mmap
+from app.dashboard.utils import DataBaseConnection
+from app.libpage import ui_inputs, content, modal_info, map_cluster
 
 
 def create_dashboard(server):
@@ -24,7 +24,7 @@ def create_dashboard(server):
         external_stylesheets=[dbc.themes.BOOTSTRAP, 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css']
     )
 
-    connection = DataBaseDashboard()
+    connection = DataBaseConnection()
 
     ###########################################################################################
     # Data Manipulation / Model
@@ -121,10 +121,10 @@ def create_dashboard(server):
 
                     content.getHeader(dash_app),
                     html.Hr(),
-                    sidebar_r.getComponent(dash_app),
+                    modal_info.getComponent(dash_app),
                     dbc.Row(
                         [
-                            dbc.Col(sidebar.sidebar, md=3),
+                            dbc.Col(ui_inputs.sidebar, md=3),
                             dbc.Col(content.content, md=9)
                         ],
 
@@ -525,7 +525,7 @@ def create_dashboard(server):
                             greather_or_equal=dropdown_config,
                             fl_sk=dropdown_foreign,
                             criterium=dropdown_search)
-        figure = dict(data=traces, layout=mmap.layout)
+        figure = dict(data=traces, layout=map_cluster.layout)
         return figure
 
     @dash_app.callback([Output('graph_1', 'figure'),
