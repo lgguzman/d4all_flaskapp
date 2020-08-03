@@ -280,7 +280,7 @@ controls = dbc.FormGroup(
 ########### SIDEBAR left side #######################
 sidebar = html.Div(
     [
-      html.H2(['Profile', html.I(id='info-button', n_clicks=0, className='fa fa-info-circle', style={'font-size':'18px'})], style=TEXT_STYLE) ,
+      html.H2(['Profile', html.I(id='info-button', n_clicks=0, className='fa fa-info-circle', style={'padding':'2px','margin-left':'15px','font-size':'22px'})], style=TEXT_STYLE) ,
         html.Hr(),
         controls
     ],
